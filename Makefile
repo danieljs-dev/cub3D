@@ -17,7 +17,8 @@ INCLUDE		= -I include -I ${LIBFT_DIR} -I ${MLX_DIR}
 LDFLAGS		= -lm -lXext -lX11
 
 SRCS		= $(SRC_DIR)/main.c \
-			  $(SRC_DIR)/events/close.c
+			  $(SRC_DIR)/events/close.c \
+			  $(SRC_DIR)/init/framebuffer.c
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 
 all: ${NAME}
