@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:02:28 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/25 23:46:22 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/02/26 20:11:56 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	app_destroy(t_app *app)
 {
 	if (!app)
 		return ;
+	framebuffer_destroy(app);
 	if (app->mlx.ptr && app->mlx.win)
 		mlx_destroy_window(app->mlx.ptr, app->mlx.win);
 	if (app->mlx.ptr)
@@ -36,6 +37,8 @@ static int	app_init(t_app *app)
 	app->mlx.win = mlx_new_window(app->mlx.ptr, CUB3D_WIN_W, CUB3D_WIN_H,
 			CUB3D_WIN_TITLE);
 	if (!app->mlx.win)
+		return (0);
+	if (!framebuffer_init(app))
 		return (0);
 	return (1);
 }

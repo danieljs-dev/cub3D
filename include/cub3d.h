@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:05:13 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/25 23:39:21 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/02/26 20:12:07 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,8 @@
 # define CUB3D_WIN_TITLE "cub3D"
 # define CUB3D_WIN_W 800
 # define CUB3D_WIN_H 600
+
+int		framebuffer_init(t_app *app);
+void	framebuffer_destroy(t_app *app);
 
 #endif
