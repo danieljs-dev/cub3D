@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:02:28 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/26 20:11:56 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/02/26 21:14:03 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	main(int argc, char **argv)
 	}
 	mlx_hook(app.mlx.win, 2, 1L << 0, on_keydown, &app);
 	mlx_hook(app.mlx.win, 17, 0, on_destroy, &app);
+	mlx_loop_hook(app.mlx.ptr, render_frame, &app);
 	mlx_loop(app.mlx.ptr);
 	app_destroy(&app);
 	return (0);

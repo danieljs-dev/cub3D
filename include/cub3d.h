@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:05:13 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/26 20:12:07 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/02/26 21:13:45 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@
 
 int		framebuffer_init(t_app *app);
 void	framebuffer_destroy(t_app *app);
+int		render_frame(t_app *app);
 
 #endif
