@@ -1,0 +1,39 @@
+name: tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/danieljs-dev/cub3d-tests-ci:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make vendored tools executable
+        run: chmod +x ./lib/gcovr-8.6-linux-x86_64
+
+      - name: Build, run tests and coverage
+        run: |
+          set -e
+          make CC=gcc-10 test
+          make CC=gcc-10 test-run
+          make CC=gcc-10 coverage
+
+      - name: Show coverage summary
+        run: |
+          LINES=$(jq '.line_percent' coverage.json)
+          FUNCTIONS=$(jq '.function_percent' coverage.json)
+          BRANCHES=$(jq '.branch_percent' coverage.json)
+          echo "## 📊 Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric    | Coverage |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|----------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lines     | **${LINES}%** |" >> $GITHUB_STEP_SUMMARY
+          echo "| Functions | **${FUNCTIONS}%** |" >> $GITHUB_STEP_SUMMARY
+          echo "| Branches  | **${BRANCHES}%** |" >> $GITHUB_STEP_SUMMARY
