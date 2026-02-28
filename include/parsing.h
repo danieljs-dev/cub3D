@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 20:49:50 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/28 01:21:48 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/02/28 02:01:04 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_file
 
 int		ft_print_error(const char *msg);
 int		ft_has_cub_extension(const char *path);
+int		ft_has_xpm_extension(const char *path);
 int		parse_cub_file(int argc, char **argv, t_file *file);
 void	free_file(t_file *file);
 

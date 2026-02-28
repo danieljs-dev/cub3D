@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 22:46:26 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/28 01:21:52 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/02/28 02:00:54 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ static int	set_path(char **dst, const char *src)
 	*dst = ft_strtrim(src, " \t\n");
 	if (!*dst || **dst == '\0')
 		return (ft_print_error("invalid texture path"));
+	if (!ft_has_xpm_extension(*dst))
+	{
+		free(*dst);
+		*dst = NULL;
+		return (ft_print_error("invalid texture extension (expected .xpm)"));
+	}
 	fd = open(*dst, O_RDONLY);
 	if (fd < 0)
 		return (ft_print_error("texture path not accessible"));
