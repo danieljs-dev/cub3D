@@ -21,7 +21,8 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/init/framebuffer.c \
 			  $(SRC_DIR)/render/render.c \
 			  $(SRC_DIR)/parsing/file.c \
-			  $(SRC_DIR)/parsing/utils.c
+			  $(SRC_DIR)/parsing/utils.c \
+			  $(SRC_DIR)/parsing/textures.c
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 
 all: ${NAME}

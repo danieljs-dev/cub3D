@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:02:28 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/27 21:55:01 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/02/28 01:21:56 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,18 @@ static int	app_init(t_app *app)
 
 static int	check_errors(int argc, char **argv, t_file *file)
 {
+	t_app	tmp;
+
+	ft_bzero(&tmp, sizeof(tmp));
 	if (parse_cub_file(argc, argv, file) != 0)
 		return (1);
+	if (parse_textures(&tmp, file) != 0)
+	{
+		free_textures(&tmp.tex);
+		free_file(file);
+		return (1);
+	}
+	free_textures(&tmp.tex);
 	return (0);
 }
 
