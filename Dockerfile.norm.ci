@@ -1,0 +1,13 @@
+FROM python:3.10-slim AS build
+
+RUN pip install --no-cache-dir norminette
+
+FROM python:3.10-slim
+
+COPY --from=build /usr/local /usr/local
+
+WORKDIR /workspace
+
+ENTRYPOINT ["norminette"]
+
+CMD ["--help"]
