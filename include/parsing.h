@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/25 21:05:13 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/27 21:54:57 by dajesus-         ###   ########.fr       */
+/*   Created: 2026/02/27 20:49:50 by dajesus-          #+#    #+#             */
+/*   Updated: 2026/02/27 21:55:26 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
-
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-
-# include "../lib/libft/libft.h"
-# include "../lib/minilibx-linux/mlx.h"
+#ifndef PARSING_H
+# define PARSING_H
 
 # include "structs.h"
-# include "events.h"
-# include "parsing.h"
 
-# define CUB3D_WIN_TITLE "cub3D"
-# define CUB3D_WIN_W 800
-# define CUB3D_WIN_H 600
+typedef struct s_file
+{
+	char	*path;
+	char	**lines;
+	int		line_count;
+}			t_file;
 
-int		framebuffer_init(t_app *app);
-void	framebuffer_destroy(t_app *app);
-int		render_frame(t_app *app);
+int		ft_print_error(const char *msg);
+int		ft_has_cub_extension(const char *path);
+int		parse_cub_file(int argc, char **argv, t_file *file);
+void	free_file(t_file *file);
 
 #endif
