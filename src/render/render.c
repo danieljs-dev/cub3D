@@ -6,18 +6,28 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:42:34 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/26 21:13:50 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/02/27 21:55:16 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
+static void	clear_row(char *row, int w, int bytes)
+{
+	int	x;
+
+	x = 0;
+	while (x < w)
+	{
+		ft_bzero(row + (x * bytes), bytes);
+		x++;
+	}
+}
+
 static void	clear_frame(t_img *img)
 {
 	int		bytes;
 	int		y;
-	int		x;
-	char	*row;
 
 	if (!img || !img->addr)
 		return ;
@@ -27,13 +37,7 @@ static void	clear_frame(t_img *img)
 	y = 0;
 	while (y < img->h)
 	{
-		row = img->addr + (y * img->line_len);
-		x = 0;
-		while (x < img->w)
-		{
-			ft_bzero(row + (x * bytes), bytes);
-			x++;
-		}
+		clear_row(img->addr + (y * img->line_len), img->w, bytes);
 		y++;
 	}
 }

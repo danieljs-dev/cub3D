@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:02:28 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/26 21:14:03 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/02/27 21:55:01 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,23 @@ static int	app_init(t_app *app)
 	return (1);
 }
 
+static int	check_errors(int argc, char **argv, t_file *file)
+{
+	if (parse_cub_file(argc, argv, file) != 0)
+		return (1);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_app	app;
+	t_file	file;
 
-	(void)argv;
-	(void)argc;
+	if (check_errors(argc, argv, &file) != 0)
+		return (1);
 	if (!app_init(&app))
 	{
+		free_file(&file);
 		app_destroy(&app);
 		return (1);
 	}
@@ -58,6 +67,7 @@ int	main(int argc, char **argv)
 	mlx_hook(app.mlx.win, 17, 0, on_destroy, &app);
 	mlx_loop_hook(app.mlx.ptr, render_frame, &app);
 	mlx_loop(app.mlx.ptr);
+	free_file(&file);
 	app_destroy(&app);
 	return (0);
 }
