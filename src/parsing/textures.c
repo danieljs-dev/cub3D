@@ -82,5 +82,7 @@ int	parse_textures(t_app *app, t_file *file)
 			return (1);
 		i++;
 	}
+	if (!app->tex.no || !app->tex.so || !app->tex.we || !app->tex.ea)
+		return (ft_print_error("missing texture identifier(s)"));
 	return (0);
 }
