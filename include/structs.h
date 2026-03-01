@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/28 01:21:55 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/01 14:21:31 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,21 @@ typedef struct s_tex_paths
 	char	*ea;
 }			t_tex_paths;
 
+typedef struct s_rgb
+{
+	int		r;
+	int		g;
+	int		b;
+}			t_rgb;
+
 typedef struct s_app
 {
 	t_mlx			mlx;
 	int				running;
 	t_img			frame;
 	t_tex_paths		tex;
+	t_rgb			floor;
+	t_rgb			ceiling;
 }					t_app;
 
 #endif

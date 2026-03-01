@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 20:49:50 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/28 02:01:04 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/01 14:21:31 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,8 @@ void	free_file(t_file *file);
 
 int		parse_textures(t_app *app, t_file *file);
 void	free_textures(t_tex_paths *tex);
+int		parse_colors(t_app *app, t_file *file);
+void	free_split(char **parts);
+int		is_valid_component(char *s);
 
 #endif
