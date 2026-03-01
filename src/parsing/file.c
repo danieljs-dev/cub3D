@@ -34,6 +34,7 @@ static char	**append_line(char **old, int count, char *line)
 static int	read_all_lines(int fd, t_file *file)
 {
 	char	*line;
+	char	**new_lines;
 
 	file->lines = NULL;
 	file->line_count = 0;
@@ -42,12 +43,14 @@ static int	read_all_lines(int fd, t_file *file)
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		file->lines = append_line(file->lines, file->line_count, line);
-		if (!file->lines)
+		new_lines = append_line(file->lines, file->line_count, line);
+		if (!new_lines)
 		{
 			free(line);
+			free_file(file);
 			return (0);
 		}
+		file->lines = new_lines;
 		file->line_count++;
 	}
 	return (1);
