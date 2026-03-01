@@ -39,7 +39,9 @@ TEST_SRCS	= $(TEST_DIR)/unit/parsing/test_parsing_unit.c \
 			  $(TEST_DIR)/integration/parsing/test_parsing_integration.c \
 			  $(SRC_DIR)/parsing/file.c \
 			  $(SRC_DIR)/parsing/utils.c \
-			  $(SRC_DIR)/parsing/textures.c
+			  $(SRC_DIR)/parsing/textures.c \
+			  $(SRC_DIR)/parsing/colors.c \
+			  $(SRC_DIR)/parsing/colors_utils.c
 TEST_OBJS	= ${TEST_SRCS:%.c=${OBJ_DIR}/%.test.o}
 
 # Coverage flags (tests only)
