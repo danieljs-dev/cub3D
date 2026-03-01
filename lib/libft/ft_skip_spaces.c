@@ -1,38 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_skip_spaces.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/16 15:03:43 by dajesus-          #+#    #+#             */
-/*   Updated: 2024/10/25 17:47:09 by dajesus-         ###   ########.fr       */
+/*   Created: 2026/03/01 14:17:50 by dajesus-          #+#    #+#             */
+/*   Updated: 2026/03/01 14:21:31 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *nptr)
+char	*ft_skip_spaces(char *s)
 {
-	int		i;
-	int		sign;
-	int		result;
-
-	i = 0;
-	sign = 1;
-	result = 0;
-	while (ft_isspace(nptr[i]))
-		i++;
-	if (nptr[i] == '-' || nptr[i] == '+')
-	{
-		if (nptr[i] == '-')
-			sign = -1;
-		i++;
-	}
-	while (nptr[i] >= '0' && nptr[i] <= '9')
-	{
-		result = result * 10 + (nptr[i] - '0');
-		i++;
-	}
-	return (result * sign);
+	while (*s && ft_isspace((unsigned char)*s))
+		s++;
+	return (s);
 }
