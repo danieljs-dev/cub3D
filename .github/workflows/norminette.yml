@@ -5,18 +5,15 @@ on: [push, pull_request]
 jobs:
   norminette:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/danieljs-dev/cub3d-norminette-ci:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GHCR_TOKEN }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5.1.0
-        with:
-          python-version: '3.10'
-
-      - name: Install Norminette
-        run: python -m pip install norminette
 
       - name: Run Norminette
         run: |
@@ -26,4 +23,29 @@ jobs:
             exit 1
           else
             echo "✅ No norm errors found!"
+          fi
+
+      - name: Show Norminette report
+        run: |
+          # Verificando se o arquivo de saída norminette_output.txt existe
+          if [ -f norminette_output.txt ]; then
+            ERROR_COUNT=$(grep -c "Error!" norminette_output.txt || echo 0)  # Definir 0 caso o comando falhe
+            if [ "$ERROR_COUNT" -gt 0 ]; then
+              echo "## 📊 Norminette Errors Report" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "| Metric       | Count  |" >> $GITHUB_STEP_SUMMARY
+              echo "|--------------|--------|" >> $GITHUB_STEP_SUMMARY
+              echo "| Errors       | **${ERROR_COUNT}**  |" >> $GITHUB_STEP_SUMMARY
+              echo "❌ Norminette found ${ERROR_COUNT} errors! Please fix them before merging." >> $GITHUB_STEP_SUMMARY
+            else
+              echo "## 📊 Norminette Report" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "| Metric       | Status |" >> $GITHUB_STEP_SUMMARY
+              echo "|--------------|--------|" >> $GITHUB_STEP_SUMMARY
+              echo "| Errors       | **None** |" >> $GITHUB_STEP_SUMMARY
+              echo "✅ No norm errors found!" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "❌ norminette_output.txt file not found!"
+            exit 1
           fi
