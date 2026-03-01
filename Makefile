@@ -19,7 +19,7 @@ CRIT_INC	= -I $(CRIT_DIR)/include
 CRIT_LIBDIR	= $(CRIT_DIR)/lib
 CRIT_LIBS	= -L $(CRIT_LIBDIR) -lcriterion
 
-INCLUDE		= -I include -I ${LIBFT_DIR} -I ${MLX_DIR} $(CRIT_INC)
+INCLUDE		= -I include -I ${LIBFT_DIR} -I ${MLX_DIR}
 LDFLAGS		= -lm -lXext -lX11
 
 SRCS		= $(SRC_DIR)/main.c \
@@ -28,7 +28,9 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/render/render.c \
 			  $(SRC_DIR)/parsing/file.c \
 			  $(SRC_DIR)/parsing/utils.c \
-			  $(SRC_DIR)/parsing/textures.c
+			  $(SRC_DIR)/parsing/textures.c \
+			  $(SRC_DIR)/parsing/colors.c \
+			  $(SRC_DIR)/parsing/colors_utils.c
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 
 TEST_NAME	= tests_bin
