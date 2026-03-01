@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/01 01:40:51 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/01 14:21:50 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/01 15:09:02 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,7 @@ int	parse_colors(t_app *app, t_file *file)
 			return (1);
 		i++;
 	}
+	if (!seen_f || !seen_c)
+		return (ft_print_error("missing color identifier"));
 	return (0);
 }
