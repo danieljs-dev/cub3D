@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 09:27:56 by dajesus-          #+#    #+#             */
-/*   Updated: 2025/02/12 10:07:18 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/01 14:21:31 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 int		ft_isdigit(int c);
 int		ft_isascii(int c);
+int		ft_isspace(int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
 int		ft_isprint(int c);
@@ -67,6 +68,7 @@ t_list	*ft_lstnew(void *content);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 char	*ft_itoa(int n);
 char	*get_next_line(int fd);
+char	*ft_skip_spaces(char *s);
 char	*ft_strdup(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
