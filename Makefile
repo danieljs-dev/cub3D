@@ -31,8 +31,10 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/parsing/textures.c \
 			  $(SRC_DIR)/parsing/colors.c \
 			  $(SRC_DIR)/parsing/colors_utils.c \
-			  $(SRC_DIR)/parsing/map.c \
-			  $(SRC_DIR)/parsing/map_utils.c
+			  $(SRC_DIR)/parsing/map_parse.c \
+			  $(SRC_DIR)/parsing/map_parse_utils.c \
+			  $(SRC_DIR)/parsing/map_closed.c \
+			  $(SRC_DIR)/parsing/map_closed_utils.c
 OBJS		= ${SRCS:${SRC_DIR}/%.c=${OBJ_DIR}/%.o}
 
 TEST_NAME	= tests_bin
@@ -44,8 +46,10 @@ TEST_SRCS	= $(TEST_DIR)/unit/parsing/test_parsing_unit.c \
 			  $(SRC_DIR)/parsing/textures.c \
 			  $(SRC_DIR)/parsing/colors.c \
 			  $(SRC_DIR)/parsing/colors_utils.c \
-			  $(SRC_DIR)/parsing/map.c \
-			  $(SRC_DIR)/parsing/map_utils.c
+			  $(SRC_DIR)/parsing/map_parse.c \
+			  $(SRC_DIR)/parsing/map_parse_utils.c \
+			  $(SRC_DIR)/parsing/map_closed.c \
+			  $(SRC_DIR)/parsing/map_closed_utils.c
 TEST_OBJS	= ${TEST_SRCS:%.c=${OBJ_DIR}/%.test.o}
 
 # Coverage flags (tests only)
