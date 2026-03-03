@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:02:28 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/01 14:21:31 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/02 23:43:34 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ static int	check_errors(int argc, char **argv, t_file *file)
 		return (1);
 	}
 	if (parse_colors(&tmp, file) != 0)
+	{
+		free_textures(&tmp.tex);
+		free_file(file);
+		return (1);
+	}
+	if (parse_map(&tmp, file) != 0)
 	{
 		free_textures(&tmp.tex);
 		free_file(file);

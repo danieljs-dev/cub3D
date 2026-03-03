@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 20:49:50 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/01 14:21:31 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/02 23:45:04 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 # define PARSING_H
 
 # include "structs.h"
-
-typedef struct s_file
-{
-	char	*path;
-	char	**lines;
-	int		line_count;
-}			t_file;
 
 int		ft_print_error(const char *msg);
 int		ft_has_cub_extension(const char *path);
@@ -31,6 +24,12 @@ void	free_file(t_file *file);
 int		parse_textures(t_app *app, t_file *file);
 void	free_textures(t_tex_paths *tex);
 int		parse_colors(t_app *app, t_file *file);
+int		parse_map(t_app *app, t_file *file);
+
+int		find_map_range(t_file *file, int *out_start, int *out_end);
+int		validate_map_range(t_file *file, int start, int end);
+int		dup_map_block(t_file *file, int start, int end);
+
 void	free_split(char **parts);
 int		is_valid_component(char *s);
 

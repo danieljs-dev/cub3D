@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/01 14:21:31 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/02 23:45:10 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,16 @@ typedef struct s_rgb
 	int		g;
 	int		b;
 }			t_rgb;
+
+typedef struct s_file
+{
+	char	*path;
+	char	**lines;
+	int		line_count;
+	char	**map;
+	int		map_height;
+	int		map_width;
+}			t_file;
 
 typedef struct s_app
 {

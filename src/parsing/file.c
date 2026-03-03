@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 20:49:50 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/27 21:55:06 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/03 02:17:47 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,11 @@ static char	**append_line(char **old, int count, char *line)
 	return (tmp);
 }
 
-static int	read_all_lines(int fd, t_file *file)
+static int	read_all(int fd, t_file *file)
 {
 	char	*line;
 	char	**new_lines;
 
-	file->lines = NULL;
-	file->line_count = 0;
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -63,10 +61,13 @@ static int	load_file(const char *path, t_file *file)
 	file->path = (char *)path;
 	file->lines = NULL;
 	file->line_count = 0;
+	file->map = NULL;
+	file->map_height = 0;
+	file->map_width = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (ft_print_error("cannot open map file"));
-	if (!read_all_lines(fd, file))
+	if (!read_all(fd, file))
 	{
 		close(fd);
 		return (ft_print_error("failed to read map file"));
@@ -79,17 +80,21 @@ void	free_file(t_file *file)
 {
 	int	i;
 
-	if (!file || !file->lines)
+	if (!file)
 		return ;
 	i = 0;
-	while (i < file->line_count)
-	{
-		free(file->lines[i]);
-		i++;
-	}
+	while (file->lines && i < file->line_count)
+		free(file->lines[i++]);
 	free(file->lines);
+	i = 0;
+	while (file->map && file->map[i])
+		free(file->map[i++]);
+	free(file->map);
 	file->lines = NULL;
 	file->line_count = 0;
+	file->map = NULL;
+	file->map_height = 0;
+	file->map_width = 0;
 }
 
 int	parse_cub_file(int argc, char **argv, t_file *file)

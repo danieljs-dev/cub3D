@@ -6,25 +6,30 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 22:46:26 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/28 02:00:54 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/03 02:17:34 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-static int	is_id(const char *s, const char *id)
+static int	match_id(char *s, const char *id)
 {
-	if (!s || !id)
+	s = ft_skip_spaces(s);
+	if (ft_strncmp(s, id, 2) != 0)
 		return (0);
-	return (ft_strncmp(s, id, 2) == 0 && (s[2] == ' ' || s[2] == '\t'));
+	if (s[2] != ' ' && s[2] != '\t')
+		return (0);
+	return (1);
 }
 
-static int	set_path(char **dst, const char *src)
+static int	set_path(char **dst, char *src)
 {
 	int	fd;
 
 	if (*dst)
 		return (ft_print_error("duplicate texture identifier"));
+	src = ft_skip_spaces(src);
+	src += 2;
 	*dst = ft_strtrim(src, " \t\n");
 	if (!*dst || **dst == '\0')
 		return (ft_print_error("invalid texture path"));
@@ -43,14 +48,14 @@ static int	set_path(char **dst, const char *src)
 
 static int	handle_line(t_app *app, char *line)
 {
-	if (is_id(line, "NO"))
-		return (set_path(&app->tex.no, line + 2));
-	if (is_id(line, "SO"))
-		return (set_path(&app->tex.so, line + 2));
-	if (is_id(line, "WE"))
-		return (set_path(&app->tex.we, line + 2));
-	if (is_id(line, "EA"))
-		return (set_path(&app->tex.ea, line + 2));
+	if (match_id(line, "NO"))
+		return (set_path(&app->tex.no, line));
+	if (match_id(line, "SO"))
+		return (set_path(&app->tex.so, line));
+	if (match_id(line, "WE"))
+		return (set_path(&app->tex.we, line));
+	if (match_id(line, "EA"))
+		return (set_path(&app->tex.ea, line));
 	return (0);
 }
 
