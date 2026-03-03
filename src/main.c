@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:02:28 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/03 16:56:14 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/03 18:12:48 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void	app_destroy(t_app *app)
 
 static int	app_init(t_app *app)
 {
-	ft_bzero(app, sizeof(*app));
 	app->running = 1;
 	app->mlx.ptr = mlx_init();
 	if (!app->mlx.ptr)
@@ -55,23 +54,22 @@ static int	parse_all(t_app *tmp, t_file *file)
 		return (1);
 	if (validate_player_spawn(tmp, file) != 0)
 		return (1);
+	if (player_init(tmp) != 0)
+		return (1);
 	return (0);
 }
 
-static int	check_errors(int argc, char **argv, t_file *file)
+static int	parse_setup(t_app *app, t_file *file, int argc, char **argv)
 {
-	t_app	tmp;
-
-	ft_bzero(&tmp, sizeof(tmp));
+	ft_bzero(app, sizeof(*app));
 	if (parse_cub_file(argc, argv, file) != 0)
 		return (1);
-	if (parse_all(&tmp, file) != 0)
+	if (parse_all(app, file) != 0)
 	{
-		free_textures(&tmp.tex);
+		free_textures(&app->tex);
 		free_file(file);
 		return (1);
 	}
-	free_textures(&tmp.tex);
 	return (0);
 }
 
@@ -80,10 +78,11 @@ int	main(int argc, char **argv)
 	t_app	app;
 	t_file	file;
 
-	if (check_errors(argc, argv, &file) != 0)
+	if (parse_setup(&app, &file, argc, argv) != 0)
 		return (1);
 	if (!app_init(&app))
 	{
+		free_textures(&app.tex);
 		free_file(&file);
 		app_destroy(&app);
 		return (1);
@@ -92,6 +91,7 @@ int	main(int argc, char **argv)
 	mlx_hook(app.mlx.win, 17, 0, on_destroy, &app);
 	mlx_loop_hook(app.mlx.ptr, render_frame, &app);
 	mlx_loop(app.mlx.ptr);
+	free_textures(&app.tex);
 	free_file(&file);
 	app_destroy(&app);
 	return (0);

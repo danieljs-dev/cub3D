@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/03 16:56:02 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/03 18:13:01 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,14 @@ typedef struct s_file
 	int		map_width;
 }			t_file;
 
+typedef struct s_player
+{
+	double	x;
+	double	y;
+	double	dir_x;
+	double	dir_y;
+}			t_player;
+
 typedef struct s_app
 {
 	t_mlx			mlx;
@@ -66,6 +74,7 @@ typedef struct s_app
 	int				spawn_x;
 	int				spawn_y;
 	char			spawn_dir;
+	t_player		player;
 }					t_app;
 
 #endif
