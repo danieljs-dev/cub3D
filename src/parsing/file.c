@@ -63,6 +63,9 @@ static int	load_file(const char *path, t_file *file)
 	file->path = (char *)path;
 	file->lines = NULL;
 	file->line_count = 0;
+	file->map = NULL;
+	file->map_height = 0;
+	file->map_width = 0;
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 		return (ft_print_error("cannot open map file"));
@@ -79,17 +82,33 @@ void	free_file(t_file *file)
 {
 	int	i;
 
-	if (!file || !file->lines)
+	if (!file)
 		return ;
-	i = 0;
-	while (i < file->line_count)
+	if (file->lines)
 	{
-		free(file->lines[i]);
-		i++;
+		i = 0;
+		while (i < file->line_count)
+		{
+			free(file->lines[i]);
+			i++;
+		}
+		free(file->lines);
 	}
-	free(file->lines);
+	if (file->map)
+	{
+		i = 0;
+		while (file->map[i])
+		{
+			free(file->map[i]);
+			i++;
+		}
+		free(file->map);
+	}
 	file->lines = NULL;
 	file->line_count = 0;
+	file->map = NULL;
+	file->map_height = 0;
+	file->map_width = 0;
 }
 
 int	parse_cub_file(int argc, char **argv, t_file *file)
