@@ -231,3 +231,52 @@ Test(map_validation, rejects_map_too_small)
 	free_textures(&app.tex);
 	free_file(&file);
 }
+
+Test(player_spawn, rejects_missing_spawn)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/invalid/map_too_small.cub", NULL}, &file) == 0);
+	cr_assert(parse_textures(&app, &file) == 0);
+	cr_assert(parse_colors(&app, &file) == 0);
+	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(validate_player_spawn(&app, &file) != 0);
+	free_all(&file, &app);
+}
+
+Test(player_spawn, rejects_multiple_spawns)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/invalid/multiple_players.cub", NULL}, &file) == 0);
+	cr_assert(parse_textures(&app, &file) == 0);
+	cr_assert(parse_colors(&app, &file) == 0);
+	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(validate_player_spawn(&app, &file) != 0);
+	free_all(&file, &app);
+}
+
+Test(player_spawn, accepts_single_spawn_and_stores_it)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/valid/simple.cub", NULL}, &file) == 0);
+	cr_assert(parse_textures(&app, &file) == 0);
+	cr_assert(parse_colors(&app, &file) == 0);
+	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(validate_player_spawn(&app, &file) == 0);
+	cr_assert(app.spawn_dir != 0);
+	cr_assert(app.spawn_x >= 0);
+	cr_assert(app.spawn_y >= 0);
+	cr_assert(file.map[app.spawn_y][app.spawn_x] == '0');
+	free_all(&file, &app);
+}

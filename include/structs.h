@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/02 23:45:10 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/03 16:56:02 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ typedef struct s_app
 	t_tex_paths		tex;
 	t_rgb			floor;
 	t_rgb			ceiling;
+	int				spawn_x;
+	int				spawn_y;
+	char			spawn_dir;
 }					t_app;
 
 #endif
