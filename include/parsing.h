@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 20:49:50 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/02 23:45:04 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/03 14:40:09 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int		parse_map(t_app *app, t_file *file);
 int		find_map_range(t_file *file, int *out_start, int *out_end);
 int		validate_map_range(t_file *file, int start, int end);
 int		dup_map_block(t_file *file, int start, int end);
+int		validate_map_closed(t_file *file);
 
 void	free_split(char **parts);
 int		is_valid_component(char *s);
