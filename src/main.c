@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:02:28 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/03 14:39:10 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/03 16:56:14 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static int	parse_all(t_app *tmp, t_file *file)
 	if (parse_map(tmp, file) != 0)
 		return (1);
 	if (validate_map_closed(file) != 0)
+		return (1);
+	if (validate_player_spawn(tmp, file) != 0)
 		return (1);
 	return (0);
 }
