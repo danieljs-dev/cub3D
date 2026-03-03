@@ -183,3 +183,51 @@ Test(parse_map, rejects_invalid_map_character)
 	cr_assert(validate_map_range(&file, start, end) == 0);
 	free_file(&file);
 }
+
+Test(map_validation, accepts_closed_map)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/valid/simple.cub", NULL}, &file) == 0);
+	cr_assert(parse_textures(&app, &file) == 0);
+	cr_assert(parse_colors(&app, &file) == 0);
+	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(validate_map_closed(&file) == 0);
+	free_textures(&app.tex);
+	free_file(&file);
+}
+
+Test(map_validation, rejects_open_map_wall_hole)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/invalid/wall_hole_north.cub", NULL}, &file) == 0);
+	cr_assert(parse_textures(&app, &file) == 0);
+	cr_assert(parse_colors(&app, &file) == 0);
+	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(validate_map_closed(&file) != 0);
+	free_textures(&app.tex);
+	free_file(&file);
+}
+
+Test(map_validation, rejects_map_too_small)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/invalid/map_too_small.cub", NULL}, &file) == 0);
+	cr_assert(parse_textures(&app, &file) == 0);
+	cr_assert(parse_colors(&app, &file) == 0);
+	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(validate_map_closed(&file) != 0);
+	free_textures(&app.tex);
+	free_file(&file);
+}
