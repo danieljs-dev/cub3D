@@ -143,3 +143,43 @@ Test(parse_colors, rejects_invalid_rgb_value)
 	cr_assert(parse_colors(&app, &file) != 0);
 	free_all(&file, &app);
 }
+
+Test(parse_map, accepts_map_only_file)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/invalid/map_only.cub", NULL}, &file) == 0);
+	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(file.map != NULL);
+	cr_assert(file.map_height > 0);
+	cr_assert(file.map_width > 0);
+	free_file(&file);
+}
+
+Test(parse_map, rejects_missing_map)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/invalid/empty.cub", NULL}, &file) == 0);
+	cr_assert(parse_map(&app, &file) != 0);
+	free_file(&file);
+}
+
+Test(parse_map, rejects_invalid_map_character)
+{
+	t_file	file;
+	int		start;
+	int		end;
+
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"tests/fixtures/invalid/invalid_map_char.cub", NULL}, &file) == 0);
+	cr_assert(find_map_range(&file, &start, &end) == 1);
+	cr_assert(validate_map_range(&file, start, end) == 0);
+	free_file(&file);
+}
