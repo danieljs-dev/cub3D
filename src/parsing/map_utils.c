@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 23:12:49 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/03 00:24:16 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/03 02:17:42 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,34 @@ static int	is_map_line(char *s)
 	char	*c;
 
 	c = ft_skip_spaces(s);
-	return (*c == '1');
+	if (*c == '\0' || *c == '\n')
+		return (0);
+	return (*c == '0' || *c == '1' || *c == 'N'
+		|| *c == 'S' || *c == 'E' || *c == 'W' || *c == 'C');
 }
 
 int	find_map_range(t_file *file, int *out_start, int *out_end)
 {
 	int	i;
-	int	start;
+	int	end;
 
-	i = 0;
-	start = -1;
-	while (i < file->line_count)
+	end = -1;
+	i = file->line_count - 1;
+	while (i >= 0)
 	{
-		if (start < 0 && is_map_line(file->lines[i]))
-			start = i;
-		else if (start >= 0 && !is_map_line(file->lines[i]))
+		if (is_map_line(file->lines[i]))
+		{
+			end = i;
 			break ;
-		i++;
+		}
+		i--;
 	}
-	if (start < 0)
+	if (end < 0)
 		return (0);
-	*out_start = start;
-	*out_end = i - 1;
+	*out_end = end;
+	while (end >= 0 && is_map_line(file->lines[end]))
+		end--;
+	*out_start = end + 1;
 	return (1);
 }
 
@@ -47,12 +53,11 @@ static int	validate_map_line(char *s)
 	int	i;
 
 	i = 0;
-	while (s[i] && ft_isspace((unsigned char)s[i]))
-		i++;
 	while (s[i] && s[i] != '\n')
 	{
 		if (s[i] != ' ' && s[i] != '0' && s[i] != '1'
-			&& s[i] != 'N' && s[i] != 'S' && s[i] != 'E' && s[i] != 'W')
+			&& s[i] != 'N' && s[i] != 'S' && s[i] != 'E'
+			&& s[i] != 'W' && s[i] != 'C')
 			return (0);
 		i++;
 	}
