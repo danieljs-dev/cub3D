@@ -26,6 +26,7 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/events/close.c \
 			  $(SRC_DIR)/init/framebuffer.c \
 			  $(SRC_DIR)/render/render.c \
+			  $(SRC_DIR)/player/player_init.c \
 			  $(SRC_DIR)/parsing/file.c \
 			  $(SRC_DIR)/parsing/utils.c \
 			  $(SRC_DIR)/parsing/textures.c \
