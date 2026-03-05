@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close.c                                            :+:      :+:    :+:   */
+/*   keys.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/25 22:20:24 by dajesus-          #+#    #+#             */
+/*   Created: 2026/03/04 19:04:45 by dajesus-          #+#    #+#             */
 /*   Updated: 2026/03/04 21:46:25 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3d.h"
+#ifndef KEYS_H
+# define KEYS_H
 
-int	on_destroy(void *param)
-{
-	t_app	*app;
+# define XK_ESCAPE 65307
 
-	app = (t_app *)param;
-	if (!app || !app->mlx.ptr)
-		return (0);
-	app->running = 0;
-	mlx_loop_end(app->mlx.ptr);
-	return (0);
-}
+# define XK_W 119
+# define XK_A 97
+# define XK_S 115
+# define XK_D 100
+
+#endif

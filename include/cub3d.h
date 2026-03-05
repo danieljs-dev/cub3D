@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:05:13 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/03 18:13:18 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/04 21:46:25 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <math.h>
+# include <sys/time.h>
 
 # include "../lib/libft/libft.h"
 # include "../lib/minilibx-linux/mlx.h"
@@ -24,6 +26,7 @@
 # include "events.h"
 # include "parsing.h"
 # include "player.h"
+# include "keys.h"
 
 # define CUB3D_WIN_TITLE "cub3D"
 # define CUB3D_WIN_W 800

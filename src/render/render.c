@@ -48,6 +48,7 @@ int	render_frame(t_app *app)
 		return (0);
 	if (!app->mlx.win || !app->frame.ptr)
 		return (0);
+	player_update(app);
 	clear_frame(&app->frame);
 	mlx_put_image_to_window(app->mlx.ptr, app->mlx.win, app->frame.ptr, 0, 0);
 	return (0);

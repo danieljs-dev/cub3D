@@ -16,6 +16,7 @@
 # include "structs.h"
 
 int	on_keydown(int keycode, void *param);
+int	on_keyup(int keycode, void *param);
 int	on_destroy(void *param);
 
 #endif

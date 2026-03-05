@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:02:28 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/03 18:12:48 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/04 21:46:25 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	main(int argc, char **argv)
 
 	if (parse_setup(&app, &file, argc, argv) != 0)
 		return (1);
+	app.file = &file;
 	if (!app_init(&app))
 	{
 		free_textures(&app.tex);
@@ -88,8 +89,11 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	mlx_hook(app.mlx.win, 2, 1L << 0, on_keydown, &app);
+	mlx_hook(app.mlx.win, 3, 1L << 1, on_keyup, &app);
 	mlx_hook(app.mlx.win, 17, 0, on_destroy, &app);
 	mlx_loop_hook(app.mlx.ptr, render_frame, &app);
+	if (PLAYER_TERM_DEBUG)
+		player_debug_term(&app);
 	mlx_loop(app.mlx.ptr);
 	free_textures(&app.tex);
 	free_file(&file);
