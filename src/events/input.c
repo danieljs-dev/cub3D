@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 19:38:54 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/04 21:46:25 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/06 02:43:47 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ int	on_keydown(int keycode, void *param)
 		return (0);
 	if (keycode == XK_ESCAPE)
 		return (on_destroy(param));
+	if (keycode == XK_LEFT)
+		app->input.left = 1;
+	else if (keycode == XK_RIGHT)
+		app->input.right = 1;
 	if (keycode == XK_W)
 		app->input.w = 1;
 	else if (keycode == XK_A)
@@ -39,7 +43,11 @@ int	on_keyup(int keycode, void *param)
 	app = (t_app *)param;
 	if (!app)
 		return (0);
-	if (keycode == XK_W)
+	if (keycode == XK_LEFT)
+		app->input.left = 0;
+	else if (keycode == XK_RIGHT)
+		app->input.right = 0;
+	else if (keycode == XK_W)
 		app->input.w = 0;
 	else if (keycode == XK_A)
 		app->input.a = 0;

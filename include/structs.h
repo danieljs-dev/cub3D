@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/04 21:46:25 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/06 02:43:58 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ typedef struct s_input
 	int		a;
 	int		s;
 	int		d;
+	int		left;
+	int		right;
 }			t_input;
 
 typedef struct s_app
@@ -93,6 +95,8 @@ typedef struct s_term_ctx
 	t_file		*file;
 	int			px;
 	int			py;
+	int			lx;
+	int			ly;
 }				t_term_ctx;
 
 #endif
