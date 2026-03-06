@@ -63,4 +63,4 @@ make
 
 ### AI usage
 
-GitHub Copilot and Claude were used for scaffolding, debugging, and discussing algorithm design. All generated code was reviewed, understood, and validated by the team before being committed.
+AI tools were used for scaffolding, debugging, and discussing algorithm design. All generated code was reviewed, understood, and validated by the team before being committed.
