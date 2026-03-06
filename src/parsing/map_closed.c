@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3d.h"
+#include "cub3d.h"
 
 char	**map_clone(t_file *file);
 int		map_cell(char **map, int y, int x);
