@@ -1,5 +1,5 @@
 #include <criterion/criterion.h>
-#include "../../../include/cub3d.h"
+#include "cub3d.h"
 
 Test(extension, cub_extension_ok)
 {

@@ -1,5 +1,5 @@
 #include <criterion/criterion.h>
-#include "../../../include/cub3d.h"
+#include "cub3d.h"
 
 static void	free_all(t_file *file, t_app *app)
 {
