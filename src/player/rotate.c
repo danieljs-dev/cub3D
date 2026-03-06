@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/06 01∶46∶58 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/06 01:53:44 by dajesus-         ###   ########.fr       */
+/*   Created: 2026/03/06 01:46:58 by dajesus-          #+#    #+#             */
+/*   Updated: 2026/03/06 02:43:27 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,19 @@ void	rotate_player(t_player *p, double angle)
 	old_dir_x = p->dir_x;
 	p->dir_x = p->dir_x * cos(angle) - p->dir_y * sin(angle);
 	p->dir_y = old_dir_x * sin(angle) + p->dir_y * cos(angle);
+}
+
+void	player_rotate_update(t_app *app, double dt)
+{
+	double	angle;
+
+	if (!app)
+		return ;
+	angle = 0.0;
+	if (app->input.left)
+		angle -= ROT_SPEED * dt;
+	if (app->input.right)
+		angle += ROT_SPEED * dt;
+	if (angle != 0.0)
+		rotate_player(&app->player, angle);
 }
