@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   close.c                                            :+:      :+:    :+:   */
+/*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/25 22:20:24 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/06 01:53:20 by dajesus-         ###   ########.fr       */
+/*   Created: 2026/03/06 01∶46∶58 by dajesus-          #+#    #+#             */
+/*   Updated: 2026/03/06 01:53:44 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-int	on_destroy(void *param)
+void	rotate_player(t_player *p, double angle)
 {
-	t_app	*app;
+	double	old_dir_x;
 
-	app = (t_app *)param;
-	if (!app || !app->mlx.ptr)
-		return (0);
-	app->running = 0;
-	mlx_loop_end(app->mlx.ptr);
-	return (0);
+	old_dir_x = p->dir_x;
+	p->dir_x = p->dir_x * cos(angle) - p->dir_y * sin(angle);
+	p->dir_y = old_dir_x * sin(angle) + p->dir_y * cos(angle);
 }

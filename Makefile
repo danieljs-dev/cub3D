@@ -28,6 +28,7 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/init/framebuffer.c \
 			  $(SRC_DIR)/render/render.c \
 			  $(SRC_DIR)/player/player_init.c \
+			  $(SRC_DIR)/player/rotate.c \
 			  $(SRC_DIR)/player/movement.c \
 			  $(SRC_DIR)/player/movement_collision.c \
 			  $(SRC_DIR)/player/debug_term.c \
