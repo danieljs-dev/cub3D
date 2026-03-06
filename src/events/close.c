@@ -6,7 +6,7 @@
 /*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 22:20:24 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/05 23:20:02 by vinda-si         ###   ########.fr       */
+/*   Updated: 2026/03/05 23:42:36 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	on_destroy(void *param)
 	mlx_loop_end(app->mlx.ptr);
 	return (0);
 }
+
 static void	rotate_player(t_player *p, double angle)
 {
 	double	old_dir_x;
