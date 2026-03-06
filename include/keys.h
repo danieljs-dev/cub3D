@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 19:04:45 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/04 21:46:25 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/06 01:53:01 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,8 @@
 # define XK_A 97
 # define XK_S 115
 # define XK_D 100
+
+# define XK_LEFT 65361
+# define XK_RIGHT 65363
 
 #endif

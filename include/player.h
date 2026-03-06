@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 17:10:00 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/04 21:46:25 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/06 02:44:03 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define PLAYER_MOVE_SPEED 3.0
 # define PLAYER_MAX_DT 0.05
 # define PLAYER_COLLISION_RADIUS 0.2
+# define ROT_SPEED 1.5
 
 # define PLAYER_DEFAULT_DT 0.0166666666666667 // (1.0 / 60.0)
 
@@ -31,9 +32,13 @@
 # define TERM_FLOOR "\033[42m"
 # define TERM_VOID "\033[40m"
 # define TERM_PLAYER "\033[43m"
+# define TERM_LOOK "\033[45m"
 
 int		player_init(t_app *app);
 void	player_update(t_app *app);
+void	rotate_player(t_player *p, double angle);
+void	player_rotate_update(t_app *app, double dt);
+int		player_move(t_app *app, double dx, double dy);
 void	player_debug_term(t_app *app);
 
 #endif

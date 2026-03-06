@@ -6,13 +6,11 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 18:28:15 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/04 21:46:25 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/06 02:43:33 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
-
-int		player_move(t_app *app, double dx, double dy);
 
 static double	frame_dt(t_app *app)
 {
@@ -89,6 +87,7 @@ void	player_update(t_app *app)
 	dt = frame_dt(app);
 	if (dt <= 0.0)
 		return ;
+	player_rotate_update(app, dt);
 	moved = move_step(app, dt);
 	if (PLAYER_TERM_DEBUG && moved)
 		player_debug_term(app);
