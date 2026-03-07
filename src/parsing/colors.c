@@ -66,10 +66,13 @@ static int	handle_color_line(t_app *app, char *line, int *seen_f, int *seen_c)
 	id = *line;
 	if (id != 'F' && id != 'C')
 		return (0);
-	if (line[1] != ' ' && line[1] != '\t')
+	if (line[1] != ' ' && line[1] != '\t'
+		&& line[1] != '\0' && line[1] != '\n')
 		return (0);
 	line++;
 	line = ft_skip_spaces(line);
+	if (*line == '\0' || *line == '\n')
+		return (ft_print_error("invalid RGB format"));
 	if (id == 'F')
 		return (set_color(&app->floor, seen_f, line));
 	return (set_color(&app->ceiling, seen_c, line));
