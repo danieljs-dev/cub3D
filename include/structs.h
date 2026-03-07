@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
@@ -6,9 +6,9 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/06 02:43:58 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/06 22:49:00 by dajesus-         ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
@@ -61,6 +61,8 @@ typedef struct s_player
 	double	y;
 	double	dir_x;
 	double	dir_y;
+	double	plane_x;
+	double	plane_y;
 }			t_player;
 
 typedef struct s_input
@@ -72,6 +74,13 @@ typedef struct s_input
 	int		left;
 	int		right;
 }			t_input;
+
+typedef struct s_raycore
+{
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+}			t_raycore;
 
 typedef struct s_app
 {
