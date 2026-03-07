@@ -144,6 +144,32 @@ Test(parse_colors, rejects_invalid_rgb_value)
 	free_all(&file, &app);
 }
 
+Test(parse_colors, rejects_identifier_without_space)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/invalid/color_no_space.cub", NULL}, &file) == 0);
+	cr_assert(parse_textures(&app, &file) == 0);
+	cr_assert(parse_colors(&app, &file) != 0);
+	free_all(&file, &app);
+}
+
+Test(parse_colors, rejects_bare_identifier_line)
+{
+	t_file	file;
+	t_app	app;
+
+	ft_bzero(&app, sizeof(app));
+	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
+		"maps/invalid/color_bare_identifier.cub", NULL}, &file) == 0);
+	cr_assert(parse_textures(&app, &file) == 0);
+	cr_assert(parse_colors(&app, &file) != 0);
+	free_all(&file, &app);
+}
+
 Test(parse_map, accepts_map_only_file)
 {
 	t_file	file;
