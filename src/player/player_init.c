@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 17:40:33 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/03 18:21:07 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/06 22:49:21 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	set_dir(t_player *player, char spawn_dir)
 {
 	player->dir_x = 0.0;
 	player->dir_y = 0.0;
+	player->plane_x = 0.0;
+	player->plane_y = 0.0;
 	if (spawn_dir == 'N')
 		player->dir_y = -1.0;
 	else if (spawn_dir == 'S')
@@ -24,6 +26,8 @@ static void	set_dir(t_player *player, char spawn_dir)
 		player->dir_x = 1.0;
 	else if (spawn_dir == 'W')
 		player->dir_x = -1.0;
+	player->plane_x = -player->dir_y * CAMERA_PLANE_LEN;
+	player->plane_y = player->dir_x * CAMERA_PLANE_LEN;
 }
 
 int	player_init(t_app *app)
