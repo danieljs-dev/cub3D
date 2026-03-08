@@ -28,6 +28,8 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/init/framebuffer.c \
 			  $(SRC_DIR)/render/render.c \
 			  $(SRC_DIR)/raycasting/raycast_core.c \
+			  $(SRC_DIR)/raycasting/raycast_init.c \
+			  $(SRC_DIR)/raycasting/raycast_dda.c \
 			  $(SRC_DIR)/player/player_init.c \
 			  $(SRC_DIR)/player/rotate.c \
 			  $(SRC_DIR)/player/movement.c \
