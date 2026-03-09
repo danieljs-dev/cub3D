@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/06 22:49:00 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/08 01:30:07 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,23 @@ typedef struct s_raycore
 	double	ray_dir_x;
 	double	ray_dir_y;
 }			t_raycore;
+
+typedef struct s_ray
+{
+	double	camera_x;
+	double	dir_x;
+	double	dir_y;
+	int		map_x;
+	int		map_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side;
+}			t_ray;
 
 typedef struct s_app
 {
