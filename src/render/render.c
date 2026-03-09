@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:42:34 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/02/27 21:55:16 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/08 21:55:41 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	render_frame(t_app *app)
 		return (0);
 	player_update(app);
 	clear_frame(&app->frame);
+	render_walls(app);
 	mlx_put_image_to_window(app->mlx.ptr, app->mlx.win, app->frame.ptr, 0, 0);
 	return (0);
 }
