@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 02:08:09 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/08 21:54:37 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/09 01:07:05 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,21 @@ static unsigned int	wall_color(int side)
 	return (0x00BBBBBB);
 }
 
-static double	ray_wall_t(t_ray *ray)
+static double	ray_perp_dist(t_app *app, t_ray *ray)
 {
-	if (!ray)
+	if (!app || !ray)
 		return (RAY_HUGE);
 	if (ray->side == 0)
-		return (ray->side_dist_x - ray->delta_dist_x);
-	return (ray->side_dist_y - ray->delta_dist_y);
-}
-
-static double	ray_player_to_wall_dist(t_ray *ray)
-{
-	double		t;
-	double		len;
-
-	t = ray_wall_t(ray);
-	if (t >= RAY_HUGE)
+	{
+		if (ray->dir_x == 0.0)
+			return (RAY_HUGE);
+		return (((double)ray->map_x - app->player.x
+				+ (1.0 - (double)ray->step_x) / 2.0) / ray->dir_x);
+	}
+	if (ray->dir_y == 0.0)
 		return (RAY_HUGE);
-	len = sqrt(ray->dir_x * ray->dir_x + ray->dir_y * ray->dir_y);
-	return (fabs(t) * len);
+	return (((double)ray->map_y - app->player.y
+			+ (1.0 - (double)ray->step_y) / 2.0) / ray->dir_y);
 }
 
 static void	draw_vline(t_img *img, t_draw *draw)
@@ -75,7 +71,7 @@ static void	render_column(t_app *app, t_img *img, int x)
 
 	ray_init(app, x, &ray);
 	ray_dda(app, &ray);
-	dist = ray_player_to_wall_dist(&ray);
+	dist = ray_perp_dist(app, &ray);
 	if (dist < 0.0001)
 		dist = 0.0001;
 	line_h = (int)((double)img->h / dist);
