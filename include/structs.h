@@ -6,7 +6,7 @@
 /*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/08 01:30:07 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/08 21:55:18 by dajesus-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,14 @@ typedef struct s_ray
 	int		hit;
 	int		side;
 }			t_ray;
+
+typedef struct s_draw
+{
+	int				x;
+	int				start;
+	int				end;
+	unsigned int	color;
+}					t_draw;
 
 typedef struct s_app
 {
