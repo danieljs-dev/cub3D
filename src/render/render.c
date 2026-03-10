@@ -6,7 +6,7 @@
 /*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:42:34 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/09 22:35:57 by vinda-si         ###   ########.fr       */
+/*   Updated: 2026/03/09 22:50:11 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static unsigned int	rgb_to_int(t_rgb color)
 	return ((color.r << 16) | (color.g << 8) | color.b);
 }
 
-
 static void	fill_background_half(t_img *img, int start, int end, unsigned int c)
 {
 	int		x;
@@ -26,7 +25,7 @@ static void	fill_background_half(t_img *img, int start, int end, unsigned int c)
 	char	*dst;
 
 	bytes = img->bpp / 8;
-	if (bytes <=0)
+	if (bytes <= 0)
 		return ;
 	y = start;
 	while (y < end)
@@ -46,7 +45,8 @@ static void	draw_background(t_app *app)
 {
 	unsigned int	c_color;
 	unsigned int	f_color;
-	if (!app | !app->frame.addr)
+
+	if (!app || !app->frame.addr)
 		return ;
 	c_color = rgb_to_int(app->ceiling);
 	f_color = rgb_to_int(app->floor);
@@ -61,7 +61,7 @@ int	render_frame(t_app *app)
 	if (!app->mlx.win || !app->frame.ptr)
 		return (0);
 	player_update(app);
-	clear_frame(&app->frame);
+	draw_background(app);
 	render_walls(app);
 	mlx_put_image_to_window(app->mlx.ptr, app->mlx.win, app->frame.ptr, 0, 0);
 	return (0);
