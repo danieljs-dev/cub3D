@@ -3,43 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 20:42:34 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/08 21:55:41 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/09 22:50:11 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	clear_row(char *row, int w, int bytes)
+static unsigned int	rgb_to_int(t_rgb color)
 {
-	int	x;
-
-	x = 0;
-	while (x < w)
-	{
-		ft_bzero(row + (x * bytes), bytes);
-		x++;
-	}
+	return ((color.r << 16) | (color.g << 8) | color.b);
 }
 
-static void	clear_frame(t_img *img)
+static void	fill_background_half(t_img *img, int start, int end, unsigned int c)
 {
-	int		bytes;
+	int		x;
 	int		y;
+	int		bytes;
+	char	*dst;
 
-	if (!img || !img->addr)
-		return ;
 	bytes = img->bpp / 8;
 	if (bytes <= 0)
 		return ;
-	y = 0;
-	while (y < img->h)
+	y = start;
+	while (y < end)
 	{
-		clear_row(img->addr + (y * img->line_len), img->w, bytes);
+		x = 0;
+		while (x < img->w)
+		{
+			dst = img->addr + (y * img->line_len) + (x * bytes);
+			ft_memcpy(dst, &c, bytes);
+			x++;
+		}
 		y++;
 	}
+}
+
+static void	draw_background(t_app *app)
+{
+	unsigned int	c_color;
+	unsigned int	f_color;
+
+	if (!app || !app->frame.addr)
+		return ;
+	c_color = rgb_to_int(app->ceiling);
+	f_color = rgb_to_int(app->floor);
+	fill_background_half(&app->frame, 0, app->frame.h / 2, c_color);
+	fill_background_half(&app->frame, app->frame.h / 2, app->frame.h, f_color);
 }
 
 int	render_frame(t_app *app)
@@ -49,7 +61,7 @@ int	render_frame(t_app *app)
 	if (!app->mlx.win || !app->frame.ptr)
 		return (0);
 	player_update(app);
-	clear_frame(&app->frame);
+	draw_background(app);
 	render_walls(app);
 	mlx_put_image_to_window(app->mlx.ptr, app->mlx.win, app->frame.ptr, 0, 0);
 	return (0);
