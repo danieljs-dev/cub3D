@@ -36,13 +36,7 @@ void	free_loaded_textures(t_app *app)
 		if (app->wall_text[i].ptr)
 		{
 			mlx_destroy_image(app->mlx.ptr, app->wall_text[i].ptr);
-			app->wall_text[i].ptr = NULL;
-			app->wall_text[i].addr = NULL;
-			app->wall_text[i].w = 0;
-			app->wall_text[i].h = 0;
-			app->wall_text[i].bpp = 0;
-			app->wall_text[i].line_len = 0;
-			app->wall_text[i].endian = 0;
+			ft_bzero(&app->wall_text[i], sizeof(t_img));
 		}
 		i++;
 	}
