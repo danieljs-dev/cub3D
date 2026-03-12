@@ -12,27 +12,44 @@
 
 #include "cub3d.h"
 
+static void	clear_img(t_img *img)
+{
+	if (!img)
+		return ;
+	ft_bzero(img, sizeof(*img));
+}
+
 static int	load_single_texture(t_app *app, t_img *img, char *path)
 {
+	if (!app || !app->mlx.ptr || !img || !path || *path == '\0')
+		return (ft_print_error("Failed to load XPM texture"));
+	clear_img(img);
 	img->ptr = mlx_xpm_file_to_image(app->mlx.ptr, path, &img->w, &img->h);
 	if (!img->ptr)
 		return (ft_print_error("Failed to load XPM texture"));
 	img->addr = mlx_get_data_addr(img->ptr, &img->bpp,
 			&img->line_len, &img->endian);
 	if (!img->addr)
+	{
+		mlx_destroy_image(app->mlx.ptr, img->ptr);
+		clear_img(img);
 		return (ft_print_error("Failed to get texture data address"));
+	}
 	return (0);
 }
 
 int	init_loaded_textures(t_app *app)
 {
+	if (!app)
+		return (1);
+	ft_bzero(app->wall_text, sizeof(app->wall_text));
 	if (load_single_texture(app, &app->wall_text[0], app->tex.no) != 0)
-		return (1);
+		return (free_loaded_textures(app), 1);
 	if (load_single_texture(app, &app->wall_text[1], app->tex.so) != 0)
-		return (1);
+		return (free_loaded_textures(app), 1);
 	if (load_single_texture(app, &app->wall_text[2], app->tex.we) != 0)
-		return (1);
+		return (free_loaded_textures(app), 1);
 	if (load_single_texture(app, &app->wall_text[3], app->tex.ea) != 0)
-		return (1);
+		return (free_loaded_textures(app), 1);
 	return (0);
 }
