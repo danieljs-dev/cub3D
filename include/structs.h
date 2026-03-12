@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/08 21:55:18 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/11 22:58:06 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+
+# define NUM_WALL_TEX 4
 
 typedef struct s_img
 {
@@ -107,11 +109,20 @@ typedef struct s_draw
 	unsigned int	color;
 }					t_draw;
 
+typedef enum e_wall_dir
+{
+	TEX_NO,
+	TEX_SO,
+	TEX_WE,
+	TEX_EA
+}			t_wall_dir;
+
 typedef struct s_app
 {
 	t_mlx			mlx;
 	int				running;
 	t_img			frame;
+	t_img			wall_text[NUM_WALL_TEX];
 	t_tex_paths		tex;
 	t_rgb			floor;
 	t_rgb			ceiling;

@@ -26,6 +26,7 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/events/close.c \
 			  $(SRC_DIR)/events/input.c \
 			  $(SRC_DIR)/init/framebuffer.c \
+			  $(SRC_DIR)/init/textures_load.c \
 			  $(SRC_DIR)/render/render.c \
 			  $(SRC_DIR)/render/wall_slices.c \
 			  $(SRC_DIR)/raycasting/raycast_core.c \
