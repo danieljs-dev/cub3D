@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 22:20:24 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/06 01:53:20 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/11 23:16:51 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,20 @@ int	on_destroy(void *param)
 	app->running = 0;
 	mlx_loop_end(app->mlx.ptr);
 	return (0);
+}
+
+void	free_loaded_textures(t_app *app)
+{
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if (app->wall_text[i].ptr)
+		{
+			mlx_destroy_image(app->mlx.ptr, app->wall_text[i].ptr);
+			app->wall_text[i].ptr = NULL;
+		}
+		i++;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:02:28 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/04 21:46:25 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/11 23:24:35 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	app_destroy(t_app *app)
 	if (!app)
 		return ;
 	framebuffer_destroy(app);
+	free_loaded_textures(app);
 	if (app->mlx.ptr && app->mlx.win)
 		mlx_destroy_window(app->mlx.ptr, app->mlx.win);
 	if (app->mlx.ptr)
@@ -38,6 +39,8 @@ static int	app_init(t_app *app)
 	if (!app->mlx.win)
 		return (0);
 	if (!framebuffer_init(app))
+		return (0);
+	if (init_loaded_textures(app) != 0)
 		return (0);
 	return (1);
 }

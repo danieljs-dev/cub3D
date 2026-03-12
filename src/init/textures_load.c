@@ -1,0 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures_load.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/11 22:58:45 by vinda-si          #+#    #+#             */
+/*   Updated: 2026/03/11 23:09:23 by vinda-si         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static int	load_single_texture(t_app *app, t_img *img, char *path)
+{
+	img->ptr = mlx_xpm_file_to_image(app->mlx.ptr, path, &img->w, &img->h);
+	if (!img->ptr)
+		return (ft_print_error("Failed to load XPM texture"));
+	img->addr = mlx_get_data_addr(img->ptr, &img->bpp,
+			&img->line_len, &img->endian);
+	if (!img->addr)
+		return (ft_print_error("Failed to get texture data address"));
+	return (0);
+}
+
+int	init_loaded_textures(t_app *app)
+{
+	if (load_single_texture(app, &app->wall_text[0], app->tex.no) != 0)
+		return (1);
+	if (load_single_texture(app, &app->wall_text[1], app->tex.so) != 0)
+		return (1);
+	if (load_single_texture(app, &app->wall_text[2], app->tex.we) != 0)
+		return (1);
+	if (load_single_texture(app, &app->wall_text[3], app->tex.ea) != 0)
+		return (1);
+	return (0);
+}
