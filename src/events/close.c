@@ -31,7 +31,7 @@ void	free_loaded_textures(t_app *app)
 	if (!app || !app->mlx.ptr)
 		return ;
 	i = 0;
-	while (i < 4)
+	while (i < NUM_WALL_TEX)
 	{
 		if (app->wall_text[i].ptr)
 		{

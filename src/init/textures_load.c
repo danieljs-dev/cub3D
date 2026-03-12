@@ -43,13 +43,13 @@ int	init_loaded_textures(t_app *app)
 	if (!app)
 		return (1);
 	ft_bzero(app->wall_text, sizeof(app->wall_text));
-	if (load_single_texture(app, &app->wall_text[0], app->tex.no) != 0)
+	if (load_single_texture(app, &app->wall_text[TEX_NO], app->tex.no) != 0)
 		return (free_loaded_textures(app), 1);
-	if (load_single_texture(app, &app->wall_text[1], app->tex.so) != 0)
+	if (load_single_texture(app, &app->wall_text[TEX_SO], app->tex.so) != 0)
 		return (free_loaded_textures(app), 1);
-	if (load_single_texture(app, &app->wall_text[2], app->tex.we) != 0)
+	if (load_single_texture(app, &app->wall_text[TEX_WE], app->tex.we) != 0)
 		return (free_loaded_textures(app), 1);
-	if (load_single_texture(app, &app->wall_text[3], app->tex.ea) != 0)
+	if (load_single_texture(app, &app->wall_text[TEX_EA], app->tex.ea) != 0)
 		return (free_loaded_textures(app), 1);
 	return (0);
 }

@@ -13,6 +13,8 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+# define NUM_WALL_TEX 4
+
 typedef struct s_img
 {
 	void	*ptr;
@@ -107,12 +109,20 @@ typedef struct s_draw
 	unsigned int	color;
 }					t_draw;
 
+typedef enum e_wall_dir
+{
+	TEX_NO,
+	TEX_SO,
+	TEX_WE,
+	TEX_EA
+}			t_wall_dir;
+
 typedef struct s_app
 {
 	t_mlx			mlx;
 	int				running;
 	t_img			frame;
-	t_img			wall_text[4];
+	t_img			wall_text[NUM_WALL_TEX];
 	t_tex_paths		tex;
 	t_rgb			floor;
 	t_rgb			ceiling;
