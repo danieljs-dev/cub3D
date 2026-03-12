@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/08 21:55:18 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/11 22:58:06 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ typedef struct s_app
 	t_mlx			mlx;
 	int				running;
 	t_img			frame;
+	t_img			wall_text[4];
 	t_tex_paths		tex;
 	t_rgb			floor;
 	t_rgb			ceiling;

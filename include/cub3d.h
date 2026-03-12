@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:05:13 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/08 21:55:08 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/11 23:21:33 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ int		framebuffer_init(t_app *app);
 void	framebuffer_destroy(t_app *app);
 int		render_frame(t_app *app);
 void	render_walls(t_app *app);
+int		init_loaded_textures(t_app *app);
+void	free_loaded_textures(t_app *app);
 
 #endif
