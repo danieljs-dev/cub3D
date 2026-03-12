@@ -38,18 +38,31 @@ static int	load_single_texture(t_app *app, t_img *img, char *path)
 	return (0);
 }
 
+static char	*get_tex_path(t_app *app, int index)
+{
+	if (index == TEX_NO)
+		return (app->tex.no);
+	if (index == TEX_SO)
+		return (app->tex.so);
+	if (index == TEX_WE)
+		return (app->tex.we);
+	return (app->tex.ea);
+}
+
 int	init_loaded_textures(t_app *app)
 {
+	int	i;
+
 	if (!app)
 		return (1);
 	ft_bzero(app->wall_text, sizeof(app->wall_text));
-	if (load_single_texture(app, &app->wall_text[TEX_NO], app->tex.no) != 0)
-		return (free_loaded_textures(app), 1);
-	if (load_single_texture(app, &app->wall_text[TEX_SO], app->tex.so) != 0)
-		return (free_loaded_textures(app), 1);
-	if (load_single_texture(app, &app->wall_text[TEX_WE], app->tex.we) != 0)
-		return (free_loaded_textures(app), 1);
-	if (load_single_texture(app, &app->wall_text[TEX_EA], app->tex.ea) != 0)
-		return (free_loaded_textures(app), 1);
+	i = 0;
+	while (i < NUM_WALL_TEX)
+	{
+		if (load_single_texture(app, &app->wall_text[i],
+				get_tex_path(app, i)) != 0)
+			return (free_loaded_textures(app), 1);
+		i++;
+	}
 	return (0);
 }
