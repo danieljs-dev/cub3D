@@ -55,5 +55,7 @@ dkms.conf
 *.dwo
 
 # build and binary files
+.cache/
+compile_commands.json
 build
 cub3D
