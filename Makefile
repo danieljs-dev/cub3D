@@ -28,6 +28,7 @@ SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/init/framebuffer.c \
 			  $(SRC_DIR)/init/textures_load.c \
 			  $(SRC_DIR)/render/render.c \
+			  $(SRC_DIR)/render/fps.c \
 			  $(SRC_DIR)/render/wall_slices.c \
 			  $(SRC_DIR)/raycasting/raycast_core.c \
 			  $(SRC_DIR)/raycasting/raycast_init.c \

@@ -38,6 +38,8 @@ int		framebuffer_init(t_app *app);
 void	framebuffer_destroy(t_app *app);
 int		render_frame(t_app *app);
 void	render_walls(t_app *app);
+void	fps_update(t_app *app);
+void	fps_draw(t_app *app);
 int		init_loaded_textures(t_app *app);
 void	free_loaded_textures(t_app *app);
 

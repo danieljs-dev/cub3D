@@ -64,5 +64,7 @@ int	render_frame(t_app *app)
 	draw_background(app);
 	render_walls(app);
 	mlx_put_image_to_window(app->mlx.ptr, app->mlx.win, app->frame.ptr, 0, 0);
+	if (FPS_DISPLAY)
+		fps_draw(app);
 	return (0);
 }

@@ -133,6 +133,10 @@ typedef struct s_app
 	t_player		player;
 	t_input			input;
 	long			last_frame_us;
+	int				fps_frames;
+	int				fps_display;
+	int				frametime_ms;
+	long			fps_update_us;
 }					t_app;
 
 typedef struct s_term_ctx
