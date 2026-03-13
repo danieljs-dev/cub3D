@@ -29,11 +29,19 @@ void	free_split(char **parts)
 
 int	is_valid_component(char *s)
 {
+	int	len;
+
 	s = ft_skip_spaces(s);
 	if (*s == '\0')
 		return (0);
+	len = 0;
 	while (ft_isdigit(*s))
+	{
+		len++;
 		s++;
+	}
+	if (len > 3)
+		return (0);
 	s = ft_skip_spaces(s);
 	return (*s == '\0');
 }
