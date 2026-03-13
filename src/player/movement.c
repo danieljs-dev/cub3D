@@ -84,16 +84,7 @@ void	player_update(t_app *app)
 		return ;
 	dt = frame_dt(app);
 	if (FPS_DISPLAY)
-	{
-		app->fps_frames++;
-		if (app->last_frame_us - app->fps_update_us >= FPS_UPDATE_US)
-		{
-			app->fps_display = app->fps_frames * (int)(USEC_PER_SEC
-					/ FPS_UPDATE_US);
-			app->fps_frames = 0;
-			app->fps_update_us = app->last_frame_us;
-		}
-	}
+		fps_update(app);
 	if (dt > PLAYER_MAX_DT)
 		dt = PLAYER_MAX_DT;
 	if (dt <= 0.0)
