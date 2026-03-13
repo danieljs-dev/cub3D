@@ -59,14 +59,14 @@ static void	draw_fps(t_app *app)
 	char	*num;
 	char	*str;
 
-	num = ft_itoa((int)app->fps);
+	num = ft_itoa(app->fps_display);
 	if (!num)
 		return ;
 	str = ft_strjoin("FPS: ", num);
 	free(num);
 	if (!str)
 		return ;
-	mlx_string_put(app->mlx.ptr, app->mlx.win, 10, 20, 0xFFFFFF, str);
+	mlx_string_put(app->mlx.ptr, app->mlx.win, 10, 20, 0x000000, str);
 	free(str);
 }
 

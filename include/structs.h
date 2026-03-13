@@ -134,6 +134,8 @@ typedef struct s_app
 	t_input			input;
 	long			last_frame_us;
 	double			fps;
+	int				fps_display;
+	long			fps_update_us;
 }					t_app;
 
 typedef struct s_term_ctx
