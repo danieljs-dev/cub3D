@@ -83,13 +83,14 @@ void	player_update(t_app *app)
 	if (!app)
 		return ;
 	dt = frame_dt(app);
-	if (dt > 0.0 && FPS_DISPLAY)
+	if (FPS_DISPLAY)
 	{
-		app->fps = FPS_SMOOTHING * app->fps
-			+ (1.0 - FPS_SMOOTHING) * (1.0 / dt);
+		app->fps_frames++;
 		if (app->last_frame_us - app->fps_update_us >= FPS_UPDATE_US)
 		{
-			app->fps_display = (int)app->fps;
+			app->fps_display = app->fps_frames * (int)(USEC_PER_SEC
+					/ FPS_UPDATE_US);
+			app->fps_frames = 0;
 			app->fps_update_us = app->last_frame_us;
 		}
 	}
