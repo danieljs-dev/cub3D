@@ -135,7 +135,7 @@ typedef struct s_app
 	long			last_frame_us;
 	int				fps_frames;
 	int				fps_display;
-	int				frametime_ms;
+	int				ft_ms_display;
 	long			fps_update_us;
 }					t_app;
 
