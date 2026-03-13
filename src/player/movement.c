@@ -29,8 +29,6 @@ static double	frame_dt(t_app *app)
 	app->last_frame_us = now;
 	if (dt < 0.0)
 		return (0.0);
-	if (dt > PLAYER_MAX_DT)
-		return (PLAYER_MAX_DT);
 	return (dt);
 }
 
@@ -85,6 +83,11 @@ void	player_update(t_app *app)
 	if (!app)
 		return ;
 	dt = frame_dt(app);
+	if (dt > 0.0 && FPS_DISPLAY)
+		app->fps = FPS_SMOOTHING * app->fps
+			+ (1.0 - FPS_SMOOTHING) * (1.0 / dt);
+	if (dt > PLAYER_MAX_DT)
+		dt = PLAYER_MAX_DT;
 	if (dt <= 0.0)
 		return ;
 	player_rotate_update(app, dt);

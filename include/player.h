@@ -28,6 +28,8 @@
 # define USEC_PER_SEC_DBL 1000000.0
 
 # define PLAYER_TERM_DEBUG 1
+# define FPS_DISPLAY 1
+# define FPS_SMOOTHING 0.9
 
 # define TERM_RESET "\033[0m"
 # define TERM_WALL "\033[44m"

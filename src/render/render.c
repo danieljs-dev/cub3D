@@ -54,6 +54,22 @@ static void	draw_background(t_app *app)
 	fill_background_half(&app->frame, app->frame.h / 2, app->frame.h, f_color);
 }
 
+static void	draw_fps(t_app *app)
+{
+	char	*num;
+	char	*str;
+
+	num = ft_itoa((int)app->fps);
+	if (!num)
+		return ;
+	str = ft_strjoin("FPS: ", num);
+	free(num);
+	if (!str)
+		return ;
+	mlx_string_put(app->mlx.ptr, app->mlx.win, 10, 20, 0xFFFFFF, str);
+	free(str);
+}
+
 int	render_frame(t_app *app)
 {
 	if (!app || !app->mlx.ptr)
@@ -64,5 +80,7 @@ int	render_frame(t_app *app)
 	draw_background(app);
 	render_walls(app);
 	mlx_put_image_to_window(app->mlx.ptr, app->mlx.win, app->frame.ptr, 0, 0);
+	if (FPS_DISPLAY)
+		draw_fps(app);
 	return (0);
 }
