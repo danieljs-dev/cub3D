@@ -51,8 +51,8 @@ typedef struct s_file
 {
 	char	*path;
 	char	**lines;
-	int		line_count;
 	char	**map;
+	int		line_count;
 	int		map_height;
 	int		map_width;
 }			t_file;
@@ -89,12 +89,12 @@ typedef struct s_ray
 	double	camera_x;
 	double	dir_x;
 	double	dir_y;
-	int		map_x;
-	int		map_y;
 	double	delta_dist_x;
 	double	delta_dist_y;
 	double	side_dist_x;
 	double	side_dist_y;
+	int		map_x;
+	int		map_y;
 	int		step_x;
 	int		step_y;
 	int		hit;
@@ -103,16 +103,16 @@ typedef struct s_ray
 
 typedef struct s_tex_col
 {
+	double	wall_x;
+	double	tex_step;
+	double	tex_pos;
 	int		x;
 	int		start;
 	int		end;
 	int		line_h;
 	int		tex_idx;
-	double	wall_x;
 	int		bpp;
 	int		tex_x;
-	double	tex_step;
-	double	tex_pos;
 }			t_tex_col;
 
 typedef enum e_wall_dir
@@ -126,32 +126,32 @@ typedef enum e_wall_dir
 typedef struct s_app
 {
 	t_mlx			mlx;
-	int				running;
 	t_img			frame;
 	t_img			wall_text[NUM_WALL_TEX];
+	t_file			*file;
+	t_player		player;
 	t_tex_paths		tex;
 	t_rgb			floor;
 	t_rgb			ceiling;
-	t_file			*file;
-	int				spawn_x;
-	int				spawn_y;
-	char			spawn_dir;
-	t_player		player;
 	t_input			input;
 	long			last_frame_us;
+	long			fps_update_us;
+	int				running;
+	int				spawn_x;
+	int				spawn_y;
 	int				fps_frames;
 	int				fps_display;
 	int				ft_ms_display;
-	long			fps_update_us;
+	char			spawn_dir;
 }					t_app;
 
 typedef struct s_term_ctx
 {
-	t_file		*file;
-	int			px;
-	int			py;
-	int			lx;
-	int			ly;
+	t_file	*file;
+	int		px;
+	int		py;
+	int		lx;
+	int		ly;
 }				t_term_ctx;
 
 #endif
