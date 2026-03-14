@@ -12,87 +12,94 @@
 
 #include "cub3d.h"
 
-static void	set_tex_params(t_app *app, t_ray *r, t_tex_col *s, double dist)
+static void	set_wall_texture_hit(t_app *app, t_ray *ray,
+				t_tex_col *col, double perp_dist)
 {
-	if (r->side == 0)
+	if (ray->side == 0)
 	{
-		s->wall_x = app->player.y + dist * r->dir_y;
-		s->tex_idx = TEX_WE;
-		if (r->dir_x > 0)
-			s->tex_idx = TEX_EA;
+		col->wall_x = app->player.y + perp_dist * ray->dir_y;
+		col->tex_idx = TEX_WE;
+		if (ray->dir_x > 0)
+			col->tex_idx = TEX_EA;
 	}
 	else
 	{
-		s->wall_x = app->player.x + dist * r->dir_x;
-		s->tex_idx = TEX_NO;
-		if (r->dir_y > 0)
-			s->tex_idx = TEX_SO;
+		col->wall_x = app->player.x + perp_dist * ray->dir_x;
+		col->tex_idx = TEX_NO;
+		if (ray->dir_y > 0)
+			col->tex_idx = TEX_SO;
 	}
-	s->wall_x -= floor(s->wall_x);
+	col->wall_x -= floor(col->wall_x);
 }
 
-static int	tex_x_coord(t_tex_col *s, t_ray *r, t_img *tex)
+static int	init_textured_column(t_img *img, t_tex_col *col,
+				t_ray *ray, t_img *texture)
 {
-	int	t_x;
-
-	t_x = (int)(s->wall_x * (double)tex->w);
-	if (t_x >= tex->w)
-		t_x = tex->w - 1;
-	if ((r->side == 0 && r->dir_x < 0) || (r->side == 1 && r->dir_y > 0))
-		t_x = tex->w - t_x - 1;
-	if (t_x < 0)
-		t_x = 0;
-	return (t_x);
+	if (!img || !img->addr || img->bpp <= 0
+		|| !texture || !texture->addr || !col || !ray)
+		return (0);
+	col->bpp = img->bpp / 8;
+	if (col->bpp <= 0 || col->line_h <= 0
+		|| col->x < 0 || col->x >= img->w)
+		return (0);
+	if (texture->w <= 0 || texture->h <= 0)
+		return (0);
+	col->tex_x = (int)(col->wall_x * (double)texture->w);
+	if (col->tex_x >= texture->w)
+		col->tex_x = texture->w - 1;
+	if ((ray->side == 0 && ray->dir_x < 0)
+		|| (ray->side == 1 && ray->dir_y > 0))
+		col->tex_x = texture->w - col->tex_x - 1;
+	if (col->tex_x < 0)
+		col->tex_x = 0;
+	col->tex_step = 1.0 * texture->h / col->line_h;
+	col->tex_pos = (col->start - img->h / 2 + col->line_h / 2) * col->tex_step;
+	return (1);
 }
 
-static void	draw_tex_col(t_img *img, t_tex_col *s, t_ray *r, t_img *tex)
+static void	draw_textured_column(t_img *img, t_tex_col *col,
+				t_ray *ray, t_img *texture)
 {
-	int		t_x;
-	double	step;
-	double	pos;
-	int		y;
-	int		b;
+	int		screen_y;
+	int		tex_y;
 
-	if (!img || !img->addr || img->bpp <= 0 || !tex || !tex->addr || !s || !r)
+	if (!init_textured_column(img, col, ray, texture))
 		return ;
-	b = img->bpp / 8;
-	if (s->x < 0 || s->x >= img->w || b <= 0 || tex->w <= 0 || tex->h <= 0)
-		return ;
-	t_x = tex_x_coord(s, r, tex);
-	step = 1.0 * tex->h / s->line_h;
-	pos = (s->start - img->h / 2 + s->line_h / 2) * step;
-	y = s->start;
-	while (y <= s->end)
+	screen_y = col->start;
+	while (screen_y <= col->end)
 	{
-		if ((int)pos >= 0 && (int)pos < tex->h)
-			ft_memcpy(img->addr + (y * img->line_len) + (s->x * b),
-				tex->addr + ((int)pos * tex->line_len) + (t_x * b), b);
-		pos += step;
-		y++;
+		tex_y = (int)col->tex_pos;
+		if (tex_y >= 0 && tex_y < texture->h)
+			ft_memcpy(img->addr + (screen_y * img->line_len)
+				+ (col->x * col->bpp),
+				texture->addr + (tex_y * texture->line_len)
+				+ (col->tex_x * col->bpp), col->bpp);
+		col->tex_pos += col->tex_step;
+		screen_y++;
 	}
 }
 
-static void	render_column(t_app *app, t_img *img, int x)
+static void	render_wall_column(t_app *app, t_img *img, int screen_x)
 {
 	t_ray		ray;
-	t_tex_col	s;
-	double		dist;
+	t_tex_col	col;
+	double		perp_dist;
 
-	ray_init(app, x, &ray);
+	ray_init(app, screen_x, &ray);
 	ray_dda(app, &ray);
-	dist = ray_perp_dist(app, &ray);
-	if (dist < 0.0001)
-		dist = 0.0001;
-	s.line_h = (int)((double)img->h / dist);
-	s.x = x;
-	s.start = (-s.line_h / 2) + (img->h / 2);
-	s.end = (s.line_h / 2) + (img->h / 2);
-	if (s.start < 0)
-		s.start = 0;
-	if (s.end >= img->h)
-		s.end = img->h - 1;
-	set_tex_params(app, &ray, &s, dist);
-	draw_tex_col(img, &s, &ray, &app->wall_text[s.tex_idx]);
+	perp_dist = ray_perp_dist(app, &ray);
+	if (perp_dist < 0.0001)
+		perp_dist = 0.0001;
+	col.line_h = (int)((double)img->h / perp_dist);
+	col.x = screen_x;
+	col.start = (-col.line_h / 2) + (img->h / 2);
+	col.end = (col.line_h / 2) + (img->h / 2);
+	if (col.start < 0)
+		col.start = 0;
+	if (col.end >= img->h)
+		col.end = img->h - 1;
+	set_wall_texture_hit(app, &ray, &col, perp_dist);
+	draw_textured_column(img, &col, &ray, &app->wall_text[col.tex_idx]);
 }
 
 void	render_walls(t_app *app)
@@ -108,7 +115,7 @@ void	render_walls(t_app *app)
 	x = 0;
 	while (x < img->w)
 	{
-		render_column(app, img, x);
+		render_wall_column(app, img, x);
 		x++;
 	}
 }
