@@ -56,19 +56,26 @@ static void	draw_tex_col(t_img *img, t_tex_col *s, t_ray *r, t_img *tex)
 	int		y;
 	int		b;
 
+	if (!img || !img->addr || img->bpp <= 0 || !tex || !tex->addr || !s || !r)
+		return ;
 	b = img->bpp / 8;
+	if (s->x < 0 || s->x >= img->w || b <= 0 || tex->w <= 0 || tex->h <= 0)
+		return ;
 	t_x = (int)(s->wall_x * (double)tex->w);
+	if (t_x >= tex->w)
+		t_x = tex->w - 1;
 	if ((r->side == 0 && r->dir_x < 0) || (r->side == 1 && r->dir_y > 0))
 		t_x = tex->w - t_x - 1;
+	if (t_x < 0)
+		t_x = 0;
 	step = 1.0 * tex->h / s->line_h;
 	pos = (s->start - img->h / 2 + s->line_h / 2) * step;
 	y = s->start;
-	if (s->start < 0)
-		y = 0;
 	while (y <= s->end)
 	{
-		ft_memcpy(img->addr + (y * img->line_len) + (s->x * b),
-			tex->addr + ((int)pos * tex->line_len) + (t_x * b), b);
+		if ((int)pos >= 0 && (int)pos < tex->h)
+			ft_memcpy(img->addr + (y * img->line_len) + (s->x * b),
+				tex->addr + ((int)pos * tex->line_len) + (t_x * b), b);
 		pos += step;
 		y++;
 	}
@@ -89,6 +96,8 @@ static void	render_column(t_app *app, t_img *img, int x)
 	s.x = x;
 	s.start = (-s.line_h / 2) + (img->h / 2);
 	s.end = (s.line_h / 2) + (img->h / 2);
+	if (s.start < 0)
+		s.start = 0;
 	if (s.end >= img->h)
 		s.end = img->h - 1;
 	set_tex_params(app, &ray, &s, dist);

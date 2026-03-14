@@ -59,3 +59,6 @@ dkms.conf
 compile_commands.json
 build
 cub3D
+
+# minilibx test binaries
+lib/minilibx-linux/test/mlx-test
