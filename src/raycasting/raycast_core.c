@@ -33,3 +33,20 @@ void	raycore_init(t_app *app, int screen_x, t_raycore *out)
 	out->ray_dir_x = app->player.dir_x + app->player.plane_x * cam_x;
 	out->ray_dir_y = app->player.dir_y + app->player.plane_y * cam_x;
 }
+
+double	ray_perp_dist(t_app *app, t_ray *ray)
+{
+	if (!app || !ray)
+		return (RAY_HUGE);
+	if (ray->side == 0)
+	{
+		if (ray->dir_x == 0.0)
+			return (RAY_HUGE);
+		return (((double)ray->map_x - app->player.x
+				+ (1.0 - (double)ray->step_x) / 2.0) / ray->dir_x);
+	}
+	if (ray->dir_y == 0.0)
+		return (RAY_HUGE);
+	return (((double)ray->map_y - app->player.y
+			+ (1.0 - (double)ray->step_y) / 2.0) / ray->dir_y);
+}

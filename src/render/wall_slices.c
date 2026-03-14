@@ -3,83 +3,103 @@
 /*                                                        :::      ::::::::   */
 /*   wall_slices.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 02:08:09 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/09 01:07:05 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/13 21:13:07 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static unsigned int	wall_color(int side)
+static void	set_wall_texture_hit(t_app *app, t_ray *ray,
+				t_tex_col *col, double perp_dist)
 {
-	if (side == 1)
-		return (0x00777777);
-	return (0x00BBBBBB);
-}
-
-static double	ray_perp_dist(t_app *app, t_ray *ray)
-{
-	if (!app || !ray)
-		return (RAY_HUGE);
 	if (ray->side == 0)
 	{
-		if (ray->dir_x == 0.0)
-			return (RAY_HUGE);
-		return (((double)ray->map_x - app->player.x
-				+ (1.0 - (double)ray->step_x) / 2.0) / ray->dir_x);
+		col->wall_x = app->player.y + perp_dist * ray->dir_y;
+		col->tex_idx = TEX_WE;
+		if (ray->dir_x > 0)
+			col->tex_idx = TEX_EA;
 	}
-	if (ray->dir_y == 0.0)
-		return (RAY_HUGE);
-	return (((double)ray->map_y - app->player.y
-			+ (1.0 - (double)ray->step_y) / 2.0) / ray->dir_y);
-}
-
-static void	draw_vline(t_img *img, t_draw *draw)
-{
-	char	*dst;
-	int		bytes;
-	int		y;
-	int		y_end;
-
-	if (!img || !img->addr || img->bpp <= 0 || !draw)
-		return ;
-	bytes = img->bpp / 8;
-	if (draw->x < 0 || draw->x >= img->w || bytes <= 0)
-		return ;
-	y = draw->start;
-	y_end = draw->end;
-	if (y < 0)
-		y = 0;
-	if (y_end >= img->h)
-		y_end = img->h - 1;
-	while (y <= y_end)
+	else
 	{
-		dst = img->addr + (y * img->line_len) + (draw->x * bytes);
-		ft_memcpy(dst, &draw->color, bytes);
-		y++;
+		col->wall_x = app->player.x + perp_dist * ray->dir_x;
+		col->tex_idx = TEX_NO;
+		if (ray->dir_y > 0)
+			col->tex_idx = TEX_SO;
+	}
+	col->wall_x -= floor(col->wall_x);
+}
+
+static int	init_textured_column(t_img *img, t_tex_col *col,
+				t_ray *ray, t_img *texture)
+{
+	if (!img || !img->addr || img->bpp <= 0
+		|| !texture || !texture->addr || !col || !ray)
+		return (0);
+	col->bpp = img->bpp / 8;
+	if (col->bpp <= 0 || col->line_h <= 0
+		|| col->x < 0 || col->x >= img->w)
+		return (0);
+	if (texture->w <= 0 || texture->h <= 0)
+		return (0);
+	col->tex_x = (int)(col->wall_x * (double)texture->w);
+	if (col->tex_x >= texture->w)
+		col->tex_x = texture->w - 1;
+	if ((ray->side == 0 && ray->dir_x < 0)
+		|| (ray->side == 1 && ray->dir_y > 0))
+		col->tex_x = texture->w - col->tex_x - 1;
+	if (col->tex_x < 0)
+		col->tex_x = 0;
+	col->tex_step = 1.0 * texture->h / col->line_h;
+	col->tex_pos = (col->start - img->h / 2 + col->line_h / 2) * col->tex_step;
+	return (1);
+}
+
+static void	draw_textured_column(t_img *img, t_tex_col *col,
+				t_ray *ray, t_img *texture)
+{
+	int		screen_y;
+	int		tex_y;
+
+	if (!init_textured_column(img, col, ray, texture))
+		return ;
+	screen_y = col->start;
+	while (screen_y <= col->end)
+	{
+		tex_y = (int)col->tex_pos;
+		if (tex_y >= 0 && tex_y < texture->h)
+			ft_memcpy(img->addr + (screen_y * img->line_len)
+				+ (col->x * col->bpp),
+				texture->addr + (tex_y * texture->line_len)
+				+ (col->tex_x * col->bpp), col->bpp);
+		col->tex_pos += col->tex_step;
+		screen_y++;
 	}
 }
 
-static void	render_column(t_app *app, t_img *img, int x)
+static void	render_wall_column(t_app *app, t_img *img, int screen_x)
 {
 	t_ray		ray;
-	t_draw		draw;
-	double		dist;
-	int			line_h;
+	t_tex_col	col;
+	double		perp_dist;
 
-	ray_init(app, x, &ray);
+	ray_init(app, screen_x, &ray);
 	ray_dda(app, &ray);
-	dist = ray_perp_dist(app, &ray);
-	if (dist < 0.0001)
-		dist = 0.0001;
-	line_h = (int)((double)img->h / dist);
-	draw.x = x;
-	draw.start = (-line_h / 2) + (img->h / 2);
-	draw.end = (line_h / 2) + (img->h / 2);
-	draw.color = wall_color(ray.side);
-	draw_vline(img, &draw);
+	perp_dist = ray_perp_dist(app, &ray);
+	if (perp_dist < 0.0001)
+		perp_dist = 0.0001;
+	col.line_h = (int)((double)img->h / perp_dist);
+	col.x = screen_x;
+	col.start = (-col.line_h / 2) + (img->h / 2);
+	col.end = (col.line_h / 2) + (img->h / 2);
+	if (col.start < 0)
+		col.start = 0;
+	if (col.end >= img->h)
+		col.end = img->h - 1;
+	set_wall_texture_hit(app, &ray, &col, perp_dist);
+	draw_textured_column(img, &col, &ray, &app->wall_text[col.tex_idx]);
 }
 
 void	render_walls(t_app *app)
@@ -95,7 +115,7 @@ void	render_walls(t_app *app)
 	x = 0;
 	while (x < img->w)
 	{
-		render_column(app, img, x);
+		render_wall_column(app, img, x);
 		x++;
 	}
 }

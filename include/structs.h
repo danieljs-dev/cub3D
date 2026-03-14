@@ -6,7 +6,7 @@
 /*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 21:12:23 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/11 22:58:06 by vinda-si         ###   ########.fr       */
+/*   Updated: 2026/03/13 20:31:08 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,19 @@ typedef struct s_ray
 	int		side;
 }			t_ray;
 
-typedef struct s_draw
+typedef struct s_tex_col
 {
-	int				x;
-	int				start;
-	int				end;
-	unsigned int	color;
-}					t_draw;
+	int		x;
+	int		start;
+	int		end;
+	int		line_h;
+	int		tex_idx;
+	double	wall_x;
+	int		bpp;
+	int		tex_x;
+	double	tex_step;
+	double	tex_pos;
+}			t_tex_col;
 
 typedef enum e_wall_dir
 {
