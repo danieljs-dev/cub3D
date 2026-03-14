@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   wall_slices.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dajesus- <dajesus-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vinda-si <vinda-si@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 02:08:09 by dajesus-          #+#    #+#             */
-/*   Updated: 2026/03/09 01:07:05 by dajesus-         ###   ########.fr       */
+/*   Updated: 2026/03/13 21:13:07 by vinda-si         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static unsigned int	wall_color(int side)
-{
-	if (side == 1)
-		return (0x00777777);
-	return (0x00BBBBBB);
-}
 
 static double	ray_perp_dist(t_app *app, t_ray *ray)
 {
@@ -36,28 +29,47 @@ static double	ray_perp_dist(t_app *app, t_ray *ray)
 			+ (1.0 - (double)ray->step_y) / 2.0) / ray->dir_y);
 }
 
-static void	draw_vline(t_img *img, t_draw *draw)
+static void	set_tex_params(t_app *app, t_ray *r, t_tex_col *s, double dist)
 {
-	char	*dst;
-	int		bytes;
-	int		y;
-	int		y_end;
-
-	if (!img || !img->addr || img->bpp <= 0 || !draw)
-		return ;
-	bytes = img->bpp / 8;
-	if (draw->x < 0 || draw->x >= img->w || bytes <= 0)
-		return ;
-	y = draw->start;
-	y_end = draw->end;
-	if (y < 0)
-		y = 0;
-	if (y_end >= img->h)
-		y_end = img->h - 1;
-	while (y <= y_end)
+	if (r->side == 0)
 	{
-		dst = img->addr + (y * img->line_len) + (draw->x * bytes);
-		ft_memcpy(dst, &draw->color, bytes);
+		s->wall_x = app->player.y + dist * r->dir_y;
+		s->tex_idx = TEX_WE;
+		if (r->dir_x > 0)
+			s->tex_idx = TEX_EA;
+	}
+	else
+	{
+		s->wall_x = app->player.x + dist * r->dir_x;
+		s->tex_idx = TEX_NO;
+		if (r->dir_y > 0)
+			s->tex_idx = TEX_SO;
+	}
+	s->wall_x -= floor(s->wall_x);
+}
+
+static void	draw_tex_col(t_img *img, t_tex_col *s, t_ray *r, t_img *tex)
+{
+	int		t_x;
+	double	step;
+	double	pos;
+	int		y;
+	int		b;
+
+	b = img->bpp / 8;
+	t_x = (int)(s->wall_x * (double)tex->w);
+	if ((r->side == 0 && r->dir_x < 0) || (r->side == 1 && r->dir_y > 0))
+		t_x = tex->w - t_x - 1;
+	step = 1.0 * tex->h / s->line_h;
+	pos = (s->start - img->h / 2 + s->line_h / 2) * step;
+	y = s->start;
+	if (s->start < 0)
+		y = 0;
+	while (y <= s->end)
+	{
+		ft_memcpy(img->addr + (y * img->line_len) + (s->x * b),
+			tex->addr + ((int)pos * tex->line_len) + (t_x * b), b);
+		pos += step;
 		y++;
 	}
 }
@@ -65,21 +77,22 @@ static void	draw_vline(t_img *img, t_draw *draw)
 static void	render_column(t_app *app, t_img *img, int x)
 {
 	t_ray		ray;
-	t_draw		draw;
+	t_tex_col	s;
 	double		dist;
-	int			line_h;
 
 	ray_init(app, x, &ray);
 	ray_dda(app, &ray);
 	dist = ray_perp_dist(app, &ray);
 	if (dist < 0.0001)
 		dist = 0.0001;
-	line_h = (int)((double)img->h / dist);
-	draw.x = x;
-	draw.start = (-line_h / 2) + (img->h / 2);
-	draw.end = (line_h / 2) + (img->h / 2);
-	draw.color = wall_color(ray.side);
-	draw_vline(img, &draw);
+	s.line_h = (int)((double)img->h / dist);
+	s.x = x;
+	s.start = (-s.line_h / 2) + (img->h / 2);
+	s.end = (s.line_h / 2) + (img->h / 2);
+	if (s.end >= img->h)
+		s.end = img->h - 1;
+	set_tex_params(app, &ray, &s, dist);
+	draw_tex_col(img, &s, &ray, &app->wall_text[s.tex_idx]);
 }
 
 void	render_walls(t_app *app)
