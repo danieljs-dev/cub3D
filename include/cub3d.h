@@ -20,8 +20,8 @@
 # include <math.h>
 # include <sys/time.h>
 
-# include "../lib/libft/libft.h"
-# include "../lib/minilibx-linux/mlx.h"
+# include "libft.h"
+# include "mlx.h"
 
 # include "structs.h"
 # include "config.h"
