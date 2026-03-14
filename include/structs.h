@@ -101,13 +101,19 @@ typedef struct s_ray
 	int		side;
 }			t_ray;
 
-typedef struct s_draw
+typedef struct s_tex_col
 {
-	int				x;
-	int				start;
-	int				end;
-	unsigned int	color;
-}					t_draw;
+	int		x;
+	int		start;
+	int		end;
+	int		line_h;
+	int		tex_idx;
+	double	wall_x;
+	int		bpp;
+	int		tex_x;
+	double	tex_step;
+	double	tex_pos;
+}			t_tex_col;
 
 typedef enum e_wall_dir
 {
@@ -147,15 +153,5 @@ typedef struct s_term_ctx
 	int			lx;
 	int			ly;
 }				t_term_ctx;
-
-typedef struct s_tex_col
-{
-	int		x;
-	int		start;
-	int		end;
-	int		line_h;
-	int		tex_idx;
-	double	wall_x;
-}			t_tex_col;
 
 #endif
