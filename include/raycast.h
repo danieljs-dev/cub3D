@@ -20,6 +20,7 @@
 # define RAY_HUGE 1e30
 
 void	raycore_init(t_app *app, int screen_x, t_raycore *out);
+double	ray_perp_dist(t_app *app, t_ray *ray);
 
 void	ray_init(t_app *app, int screen_x, t_ray *ray);
 void	ray_dda(t_app *app, t_ray *ray);

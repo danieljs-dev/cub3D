@@ -12,23 +12,6 @@
 
 #include "cub3d.h"
 
-static double	ray_perp_dist(t_app *app, t_ray *ray)
-{
-	if (!app || !ray)
-		return (RAY_HUGE);
-	if (ray->side == 0)
-	{
-		if (ray->dir_x == 0.0)
-			return (RAY_HUGE);
-		return (((double)ray->map_x - app->player.x
-				+ (1.0 - (double)ray->step_x) / 2.0) / ray->dir_x);
-	}
-	if (ray->dir_y == 0.0)
-		return (RAY_HUGE);
-	return (((double)ray->map_y - app->player.y
-			+ (1.0 - (double)ray->step_y) / 2.0) / ray->dir_y);
-}
-
 static void	set_tex_params(t_app *app, t_ray *r, t_tex_col *s, double dist)
 {
 	if (r->side == 0)
@@ -48,6 +31,20 @@ static void	set_tex_params(t_app *app, t_ray *r, t_tex_col *s, double dist)
 	s->wall_x -= floor(s->wall_x);
 }
 
+static int	tex_x_coord(t_tex_col *s, t_ray *r, t_img *tex)
+{
+	int	t_x;
+
+	t_x = (int)(s->wall_x * (double)tex->w);
+	if (t_x >= tex->w)
+		t_x = tex->w - 1;
+	if ((r->side == 0 && r->dir_x < 0) || (r->side == 1 && r->dir_y > 0))
+		t_x = tex->w - t_x - 1;
+	if (t_x < 0)
+		t_x = 0;
+	return (t_x);
+}
+
 static void	draw_tex_col(t_img *img, t_tex_col *s, t_ray *r, t_img *tex)
 {
 	int		t_x;
@@ -61,13 +58,7 @@ static void	draw_tex_col(t_img *img, t_tex_col *s, t_ray *r, t_img *tex)
 	b = img->bpp / 8;
 	if (s->x < 0 || s->x >= img->w || b <= 0 || tex->w <= 0 || tex->h <= 0)
 		return ;
-	t_x = (int)(s->wall_x * (double)tex->w);
-	if (t_x >= tex->w)
-		t_x = tex->w - 1;
-	if ((r->side == 0 && r->dir_x < 0) || (r->side == 1 && r->dir_y > 0))
-		t_x = tex->w - t_x - 1;
-	if (t_x < 0)
-		t_x = 0;
+	t_x = tex_x_coord(s, r, tex);
 	step = 1.0 * tex->h / s->line_h;
 	pos = (s->start - img->h / 2 + s->line_h / 2) * step;
 	y = s->start;
