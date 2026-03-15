@@ -12,16 +12,6 @@
 
 #include "cub3d.h"
 
-static int	line_width(const char *s)
-{
-	int	w;
-
-	w = 0;
-	while (s[w])
-		w++;
-	return (w);
-}
-
 static void	free_clone(char **clone, int used)
 {
 	int	i;
@@ -59,28 +49,31 @@ char	**map_clone(t_file *file)
 
 int	map_cell(char **map, int y, int x)
 {
-	int	w;
-
 	if (y < 0 || x < 0)
 		return (0);
 	if (!map[y])
 		return (0);
-	w = line_width(map[y]);
-	if (x >= w)
+	if (x >= (int)ft_strlen(map[y]))
 		return (0);
 	return (map[y][x]);
 }
 
 void	map_mark(char **map, int y, int x, char v)
 {
-	int	w;
-
 	if (y < 0 || x < 0)
 		return ;
 	if (!map[y])
 		return ;
-	w = line_width(map[y]);
-	if (x >= w)
+	if (x >= (int)ft_strlen(map[y]))
 		return ;
 	map[y][x] = v;
+}
+
+int	map_cell_at(t_file *file, int x, int y)
+{
+	if (!file || !file->map)
+		return (0);
+	if (y >= file->map_height)
+		return (0);
+	return (map_cell(file->map, y, x));
 }

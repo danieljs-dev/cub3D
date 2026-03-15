@@ -12,20 +12,6 @@
 
 #include "cub3d.h"
 
-static int	is_wall_cell(t_file *file, int x, int y)
-{
-	int	len;
-
-	if (!file || !file->map)
-		return (1);
-	if (x < 0 || y < 0 || y >= file->map_height)
-		return (1);
-	len = (int)ft_strlen(file->map[y]);
-	if (x >= len)
-		return (1);
-	return (file->map[y][x] == '1');
-}
-
 static void	do_step(t_ray *ray)
 {
 	if (ray->side_dist_x < ray->side_dist_y)
@@ -49,6 +35,6 @@ void	ray_dda(t_app *app, t_ray *ray)
 	while (!ray->hit)
 	{
 		do_step(ray);
-		ray->hit = is_wall_cell(app->file, ray->map_x, ray->map_y);
+		ray->hit = (map_cell_at(app->file, ray->map_x, ray->map_y) != '0');
 	}
 }
