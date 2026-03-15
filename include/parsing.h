@@ -35,5 +35,6 @@ int		validate_player_spawn(t_app *app, t_file *file);
 int		find_map_range(t_file *file, int *out_start, int *out_end);
 int		dup_map_block(t_file *file, int start, int end);
 int		is_valid_component(char *s);
+int		map_cell_at(t_file *file, int x, int y);
 
 #endif

@@ -12,40 +12,20 @@
 
 #include "cub3d.h"
 
-static int	map_cell(t_file *file, int x, int y)
-{
-	int		w;
-	char	*row;
-
-	if (!file || !file->map)
-		return (0);
-	if (x < 0 || y < 0 || y >= file->map_height)
-		return (0);
-	row = file->map[y];
-	if (!row)
-		return (0);
-	w = 0;
-	while (row[w])
-		w++;
-	if (x >= w)
-		return (0);
-	return (row[x]);
-}
-
 static int	is_blocked(t_app *app, double x, double y)
 {
 	if (!app || !app->file)
 		return (1);
-	if (map_cell(app->file, (int)(x - PLAYER_COLLISION_RADIUS),
+	if (map_cell_at(app->file, (int)(x - PLAYER_COLLISION_RADIUS),
 		(int)(y - PLAYER_COLLISION_RADIUS)) != '0')
 		return (1);
-	if (map_cell(app->file, (int)(x + PLAYER_COLLISION_RADIUS),
+	if (map_cell_at(app->file, (int)(x + PLAYER_COLLISION_RADIUS),
 		(int)(y - PLAYER_COLLISION_RADIUS)) != '0')
 		return (1);
-	if (map_cell(app->file, (int)(x - PLAYER_COLLISION_RADIUS),
+	if (map_cell_at(app->file, (int)(x - PLAYER_COLLISION_RADIUS),
 		(int)(y + PLAYER_COLLISION_RADIUS)) != '0')
 		return (1);
-	if (map_cell(app->file, (int)(x + PLAYER_COLLISION_RADIUS),
+	if (map_cell_at(app->file, (int)(x + PLAYER_COLLISION_RADIUS),
 		(int)(y + PLAYER_COLLISION_RADIUS)) != '0')
 		return (1);
 	return (0);
