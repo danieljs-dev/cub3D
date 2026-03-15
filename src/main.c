@@ -51,7 +51,7 @@ static int	parse_all(t_app *tmp, t_file *file)
 		return (1);
 	if (parse_colors(tmp, file) != 0)
 		return (1);
-	if (parse_map(tmp, file) != 0)
+	if (parse_map(file) != 0)
 		return (1);
 	if (validate_map_closed(file) != 0)
 		return (1);

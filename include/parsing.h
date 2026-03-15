@@ -26,7 +26,7 @@ int		ft_has_xpm_extension(const char *path);
 int		parse_cub_file(int argc, char **argv, t_file *file);
 int		parse_textures(t_app *app, t_file *file);
 int		parse_colors(t_app *app, t_file *file);
-int		parse_map(t_app *app, t_file *file);
+int		parse_map(t_file *file);
 
 int		validate_map_range(t_file *file, int start, int end);
 int		validate_map_closed(t_file *file);

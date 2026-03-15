@@ -186,12 +186,10 @@ Test(parse_colors, rejects_bare_identifier_line)
 Test(parse_map, accepts_map_only_file)
 {
 	t_file	file;
-	t_app	app;
 
-	ft_bzero(&app, sizeof(app));
 	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
 		"maps/invalid/map_only.cub", NULL}, &file) == 0);
-	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(parse_map(&file) == 0);
 	cr_assert(file.map != NULL);
 	cr_assert(file.map_height > 0);
 	cr_assert(file.map_width > 0);
@@ -201,12 +199,10 @@ Test(parse_map, accepts_map_only_file)
 Test(parse_map, rejects_missing_map)
 {
 	t_file	file;
-	t_app	app;
 
-	ft_bzero(&app, sizeof(app));
 	cr_assert(parse_cub_file(2, (char *[]) {"./cub3D",
 		"maps/invalid/empty.cub", NULL}, &file) == 0);
-	cr_assert(parse_map(&app, &file) != 0);
+	cr_assert(parse_map(&file) != 0);
 	free_file(&file);
 }
 
@@ -233,7 +229,7 @@ Test(map_validation, accepts_closed_map)
 		"maps/valid/simple.cub", NULL}, &file) == 0);
 	cr_assert(parse_textures(&app, &file) == 0);
 	cr_assert(parse_colors(&app, &file) == 0);
-	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(parse_map(&file) == 0);
 	cr_assert(validate_map_closed(&file) == 0);
 	free_textures(&app.tex);
 	free_file(&file);
@@ -249,7 +245,7 @@ Test(map_validation, rejects_open_map_wall_hole)
 		"maps/invalid/wall_hole_north.cub", NULL}, &file) == 0);
 	cr_assert(parse_textures(&app, &file) == 0);
 	cr_assert(parse_colors(&app, &file) == 0);
-	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(parse_map(&file) == 0);
 	cr_assert(validate_map_closed(&file) != 0);
 	free_textures(&app.tex);
 	free_file(&file);
@@ -265,7 +261,7 @@ Test(map_validation, rejects_map_too_small)
 		"maps/invalid/map_too_small.cub", NULL}, &file) == 0);
 	cr_assert(parse_textures(&app, &file) == 0);
 	cr_assert(parse_colors(&app, &file) == 0);
-	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(parse_map(&file) == 0);
 	cr_assert(validate_map_closed(&file) != 0);
 	free_textures(&app.tex);
 	free_file(&file);
@@ -281,7 +277,7 @@ Test(player_spawn, rejects_missing_spawn)
 		"maps/invalid/map_too_small.cub", NULL}, &file) == 0);
 	cr_assert(parse_textures(&app, &file) == 0);
 	cr_assert(parse_colors(&app, &file) == 0);
-	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(parse_map(&file) == 0);
 	cr_assert(validate_player_spawn(&app, &file) != 0);
 	free_all(&file, &app);
 }
@@ -296,7 +292,7 @@ Test(player_spawn, rejects_multiple_spawns)
 		"maps/invalid/multiple_players.cub", NULL}, &file) == 0);
 	cr_assert(parse_textures(&app, &file) == 0);
 	cr_assert(parse_colors(&app, &file) == 0);
-	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(parse_map(&file) == 0);
 	cr_assert(validate_player_spawn(&app, &file) != 0);
 	free_all(&file, &app);
 }
@@ -311,7 +307,7 @@ Test(player_spawn, accepts_single_spawn_and_stores_it)
 		"maps/valid/simple.cub", NULL}, &file) == 0);
 	cr_assert(parse_textures(&app, &file) == 0);
 	cr_assert(parse_colors(&app, &file) == 0);
-	cr_assert(parse_map(&app, &file) == 0);
+	cr_assert(parse_map(&file) == 0);
 	cr_assert(validate_player_spawn(&app, &file) == 0);
 	cr_assert(app.spawn_dir != 0);
 	cr_assert(app.spawn_x >= 0);

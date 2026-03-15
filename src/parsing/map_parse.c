@@ -63,12 +63,11 @@ static int	validate_post_map(t_file *file, int map_end)
 	return (0);
 }
 
-int	parse_map(t_app *app, t_file *file)
+int	parse_map(t_file *file)
 {
 	int		start;
 	int		end;
 
-	(void)app;
 	if (!file || !file->lines)
 		return (ft_print_error("internal error"));
 	if (!find_map_range(file, &start, &end))
