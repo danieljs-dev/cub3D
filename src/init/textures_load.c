@@ -12,7 +12,6 @@
 
 #include "cub3d.h"
 
-
 static int	load_single_texture(t_app *app, t_img *img, char *path)
 {
 	if (!app || !app->mlx.ptr || !img || !path || *path == '\0')
