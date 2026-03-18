@@ -40,8 +40,8 @@
 # define USEC_PER_SEC_DBL 1000000.0
 # define FPS_UPDATE_US 500000L
 
-# define PLAYER_TERM_DEBUG 1
-# define FPS_DISPLAY 1
+# define PLAYER_TERM_DEBUG 0
+# define FPS_DISPLAY 0
 
 # define TERM_RESET "\033[0m"
 # define TERM_WALL "\033[44m"
