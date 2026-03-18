@@ -16,18 +16,18 @@
 static int	load_single_texture(t_app *app, t_img *img, char *path)
 {
 	if (!app || !app->mlx.ptr || !img || !path || *path == '\0')
-		return (ft_print_error("Failed to load XPM texture"));
+		return (ft_print_error("failed to load XPM texture"));
 	ft_bzero(img, sizeof(*img));
 	img->ptr = mlx_xpm_file_to_image(app->mlx.ptr, path, &img->w, &img->h);
 	if (!img->ptr)
-		return (ft_print_error("Failed to load XPM texture"));
+		return (ft_print_error("failed to load XPM texture"));
 	img->addr = mlx_get_data_addr(img->ptr, &img->bpp,
 			&img->line_len, &img->endian);
 	if (!img->addr)
 	{
 		mlx_destroy_image(app->mlx.ptr, img->ptr);
 		ft_bzero(img, sizeof(*img));
-		return (ft_print_error("Failed to get texture data address"));
+		return (ft_print_error("failed to get texture data address"));
 	}
 	return (0);
 }
