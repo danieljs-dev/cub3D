@@ -74,4 +74,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re coverage
+.PHONY: all clean fclean re
