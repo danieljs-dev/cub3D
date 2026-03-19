@@ -45,16 +45,6 @@ make
 ./cub3D <`.cub` FILE>
 ```
 
-### Releases
-
-- Create release tags from `development` using semantic versions such as `v0.1.0`.
-- Pushing a release tag triggers the release workflow, which fast-forwards `main`, generates release notes from the commits not yet in `main`, builds the binary, and uploads a tarball with the runtime assets.
-
-```sh
-git tag v0.1.0
-git push origin v0.1.0
-```
-
 ### Controls
 
 | Key | Action |
