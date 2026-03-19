@@ -60,7 +60,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-            gcc-10 make libx11-dev libxext-dev
+            gcc-10 make libx11-dev libxext-dev libbsd-dev jq build-essential
 
       - name: Build release binary
         run: make CC=${CC}
