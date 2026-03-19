@@ -1,0 +1,93 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc-10
+      RELEASE_BRANCH: development
+      STABLE_BRANCH: main
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch release branches
+        run: |
+          git fetch origin \
+            "refs/heads/${STABLE_BRANCH}:refs/remotes/origin/${STABLE_BRANCH}" \
+            "refs/heads/${RELEASE_BRANCH}:refs/remotes/origin/${RELEASE_BRANCH}" \
+            --tags
+
+      - name: Validate tagged commit
+        run: |
+          set -e
+
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" "origin/${RELEASE_BRANCH}"; then
+            echo "Tag must point to a commit on ${RELEASE_BRANCH}."
+            exit 1
+          fi
+
+          if ! git merge-base --is-ancestor "origin/${STABLE_BRANCH}" "$GITHUB_SHA"; then
+            echo "${STABLE_BRANCH} cannot be fast-forwarded to ${GITHUB_REF_NAME}."
+            exit 1
+          fi
+
+      - name: Generate changelog
+        run: |
+          set -e
+          {
+            echo "## Changes"
+            echo
+            if [ "$(git rev-list --count "origin/${STABLE_BRANCH}..${GITHUB_SHA}")" -eq 0 ]; then
+              echo "- No new commits since ${STABLE_BRANCH}."
+            else
+              git log --reverse --pretty=format:'- %s (%h)' "origin/${STABLE_BRANCH}..${GITHUB_SHA}"
+            fi
+          } > RELEASE_NOTES.md
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            gcc-10 make libx11-dev libxext-dev
+
+      - name: Build release binary
+        run: make CC=${CC}
+
+      - name: Package release assets
+        run: |
+          set -e
+          ARCH=$(uname -m)
+          PACKAGE_DIR="dist/cub3D-${GITHUB_REF_NAME}-linux-${ARCH}"
+
+          mkdir -p "$PACKAGE_DIR"
+          cp build/bin/cub3D "$PACKAGE_DIR/"
+          cp -R assets maps "$PACKAGE_DIR/"
+          cp README.md LICENSE "$PACKAGE_DIR/"
+
+          tar -czf "${PACKAGE_DIR}.tar.gz" -C dist "$(basename "$PACKAGE_DIR")"
+          sha256sum "${PACKAGE_DIR}.tar.gz" > "${PACKAGE_DIR}.tar.gz.sha256"
+
+      - name: Fast-forward main
+        run: git push origin "${GITHUB_SHA}:refs/heads/${STABLE_BRANCH}"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: cub3D ${{ github.ref_name }}
+          body_path: RELEASE_NOTES.md
+          files: |
+            dist/*.tar.gz
+            dist/*.sha256
+          fail_on_unmatched_files: true
