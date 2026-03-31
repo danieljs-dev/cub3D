@@ -11,16 +11,17 @@ BIN_DIR		= $(BUILD_DIR)/bin
 
 LIBFT_DIR	= lib/libft
 LIBFT_LIB	= ${LIBFT_DIR}/libft.a
-MLX_DIR		= lib/minilibx-linux/
-MLX_LIB		= ${MLX_DIR}libmlx_Linux.a
+MLX42_DIR	= lib/MLX42
+MLX42_BUILD	= $(MLX42_DIR)/build
+MLX42_LIB	= $(MLX42_BUILD)/libmlx42.a
 
 CRIT_DIR	= lib/criterion-2.4.3
 CRIT_INC	= -I $(CRIT_DIR)/include
 CRIT_LIBDIR	= $(CRIT_DIR)/lib
 CRIT_LIBS	= -L $(CRIT_LIBDIR) -lcriterion
 
-INCLUDE		= -I include -I ${LIBFT_DIR} -I ${MLX_DIR}
-LDFLAGS		= -lm -lXext -lX11
+INCLUDE		= -I include -I ${LIBFT_DIR} -I $(MLX42_DIR)/include
+LDFLAGS		= -ldl -lglfw -pthread -lm
 
 SRCS		= $(SRC_DIR)/main.c \
 			  $(SRC_DIR)/events/close.c \
@@ -75,9 +76,9 @@ GCOV		= gcov-10
 # ======================== BINARY =========================
 all: ${NAME}
 
-${NAME}: ${OBJS} ${LIBFT_LIB} ${MLX_LIB}
+${NAME}: ${XPM42_FILES} ${OBJS} ${LIBFT_LIB} ${MLX42_LIB}
 	mkdir -p ${BIN_DIR}
-	${CC} ${CFLAGS} ${OBJS} ${LIBFT_LIB} ${MLX_LIB} ${LDFLAGS} -o ${BIN_DIR}/${NAME}
+	${CC} ${CFLAGS} -no-pie ${OBJS} ${LIBFT_LIB} ${MLX42_LIB} ${LDFLAGS} -o ${BIN_DIR}/${NAME}
 	cp ${BIN_DIR}/${NAME} ${NAME}
 
 ${OBJ_DIR}/%.o: ${SRC_DIR}/%.c
@@ -112,22 +113,23 @@ coverage: test-run
 $(LIBFT_LIB):
 	make -s -C ${LIBFT_DIR} --no-print-directory
 
-$(MLX_LIB):
-	make -s -C ${MLX_DIR} --no-print-directory
+$(MLX42_LIB):
+	cmake -S $(MLX42_DIR) -B $(MLX42_BUILD)
+	cmake --build $(MLX42_BUILD) -j4
 
 # ======================== CLEAN ==========================
 clean:
 	${RM} ${OBJ_DIR}
 	${RM} ${TEST_NAME}
 	${RM} coverage.json
+	${RM} ${XPM42_FILES}
 	make -s -C ${LIBFT_DIR} clean --no-print-directory
-	make -s -C ${MLX_DIR} clean --no-print-directory
 
 fclean: clean
 	${RM} ${BUILD_DIR}
 	${RM} ${NAME}
 	make -s -C ${LIBFT_DIR} fclean --no-print-directory
-	${RM} ${MLX_LIB}
+	${RM} ${MLX42_LIB}
 
 re: fclean all
 
