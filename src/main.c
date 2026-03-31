@@ -53,29 +53,17 @@ static void	loop_hook(void *param)
 	render_frame((t_app *)param);
 }
 
-static int	parse_all(t_app *tmp, t_file *file)
-{
-	if (parse_textures(tmp, file) != 0)
-		return (1);
-	if (parse_colors(tmp, file) != 0)
-		return (1);
-	if (parse_map(file) != 0)
-		return (1);
-	if (validate_map_closed(file) != 0)
-		return (1);
-	if (validate_player_spawn(tmp, file) != 0)
-		return (1);
-	if (player_init(tmp) != 0)
-		return (1);
-	return (0);
-}
-
 static int	parse_setup(t_app *app, t_file *file, int argc, char **argv)
 {
 	ft_bzero(app, sizeof(*app));
 	if (parse_cub_file(argc, argv, file) != 0)
 		return (1);
-	if (parse_all(app, file) != 0)
+	if (parse_textures(app, file) != 0
+		|| parse_colors(app, file) != 0
+		|| parse_map(file) != 0
+		|| validate_map_closed(file) != 0
+		|| validate_player_spawn(app, file) != 0
+		|| player_init(app) != 0)
 	{
 		free_textures(&app->tex);
 		free_file(file);

@@ -26,6 +26,18 @@ static char	*to_xpm42_path(const char *path)
 	return (ft_strjoin(path, "42"));
 }
 
+static void	img_from_xpm(t_img *img, xpm_t *xpm)
+{
+	ft_bzero(img, sizeof(*img));
+	img->ptr = xpm;
+	img->addr = (char *)xpm->texture.pixels;
+	img->w = (int)xpm->texture.width;
+	img->h = (int)xpm->texture.height;
+	img->bpp = 32;
+	img->line_len = img->w * 4;
+	img->endian = 0;
+}
+
 static int	load_single_texture(t_app *app, t_img *img, char *path)
 {
 	xpm_t	*xpm;
@@ -41,21 +53,15 @@ static int	load_single_texture(t_app *app, t_img *img, char *path)
 	if (fd < 0)
 	{
 		free(path42);
-		return (ft_print_error("missing .xpm42 (run make to generate textures)"));
+		return (ft_print_error("missing .xpm42 (run make "
+				"to generate textures)"));
 	}
 	close(fd);
 	xpm = mlx_load_xpm42(path42);
 	free(path42);
 	if (!xpm)
 		return (ft_print_error("failed to load XPM42 texture"));
-	ft_bzero(img, sizeof(*img));
-	img->ptr = xpm;
-	img->addr = (char *)xpm->texture.pixels;
-	img->w = (int)xpm->texture.width;
-	img->h = (int)xpm->texture.height;
-	img->bpp = 32;
-	img->line_len = img->w * 4;
-	img->endian = 0;
+	img_from_xpm(img, xpm);
 	return (0);
 }
 
