@@ -14,17 +14,21 @@
 
 int	framebuffer_init(t_app *app)
 {
+	mlx_image_t	*img;
+
 	if (!app || !app->mlx.ptr)
 		return (0);
 	app->frame.w = CUB3D_WIN_W;
 	app->frame.h = CUB3D_WIN_H;
-	app->frame.ptr = mlx_new_image(app->mlx.ptr, app->frame.w, app->frame.h);
-	if (!app->frame.ptr)
+	img = mlx_new_image(app->mlx.ptr, app->frame.w, app->frame.h);
+	if (!img)
 		return (0);
-	app->frame.addr = mlx_get_data_addr(app->frame.ptr, &app->frame.bpp,
-			&app->frame.line_len, &app->frame.endian);
-	if (!app->frame.addr)
-		return (0);
+	app->frame.ptr = img;
+	app->frame.addr = (char *)img->pixels;
+	app->frame.bpp = 32;
+	app->frame.line_len = app->frame.w * 4;
+	app->frame.endian = 0;
+	app->ray_camera_step = RAYCORE_CAM_SCALE / (double)app->frame.w;
 	return (1);
 }
 
@@ -34,7 +38,7 @@ void	framebuffer_destroy(t_app *app)
 		return ;
 	if (app->frame.ptr)
 	{
-		mlx_destroy_image(app->mlx.ptr, app->frame.ptr);
+		mlx_delete_image(app->mlx.ptr, app->frame.ptr);
 		app->frame.ptr = NULL;
 		app->frame.addr = NULL;
 	}

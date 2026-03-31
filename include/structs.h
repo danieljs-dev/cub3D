@@ -101,6 +101,14 @@ typedef struct s_ray
 	int		side;
 }			t_ray;
 
+typedef struct s_overlay_str
+{
+	void		**slot;
+	const char	*prefix;
+	int			value;
+	int			y;
+}				t_overlay_str;
+
 typedef struct s_tex_col
 {
 	double	wall_x;
@@ -127,6 +135,7 @@ typedef struct s_app
 {
 	t_mlx			mlx;
 	t_img			frame;
+	double			ray_camera_step;
 	t_img			wall_text[NUM_WALL_TEX];
 	t_file			*file;
 	t_player		player;
@@ -142,6 +151,8 @@ typedef struct s_app
 	int				fps_frames;
 	int				fps_display;
 	int				ft_ms_display;
+	void			*fps_img;
+	void			*ms_img;
 	char			spawn_dir;
 }					t_app;
 

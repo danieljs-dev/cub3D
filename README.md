@@ -38,6 +38,9 @@ cub3D/
 ### Build & run
 
 ```sh
+# First time after cloning (fetch MLX42 submodule)
+git submodule update --init --recursive
+
 # Compilation
 make
 

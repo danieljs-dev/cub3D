@@ -23,6 +23,7 @@ void	player_update(t_app *app);
 void	rotate_player(t_player *p, double angle);
 
 void	ray_init(t_app *app, int screen_x, t_ray *ray);
+void	ray_init_from_core(t_app *app, t_ray *ray, t_raycore *core);
 void	render_walls(t_app *app);
 void	raycore_init(t_app *app, int screen_x, t_raycore *out);
 void	ray_dda(t_app *app, t_ray *ray);
@@ -34,12 +35,11 @@ void	fps_update(t_app *app);
 void	fps_draw(t_app *app);
 
 int		framebuffer_init(t_app *app);
-int		render_frame(t_app *app);
+void	render_frame(t_app *app);
 int		init_loaded_textures(t_app *app);
 int		player_init(t_app *app);
 int		player_move(t_app *app, double dx, double dy);
-int		on_keydown(int keycode, void *param);
-int		on_keyup(int keycode, void *param);
-int		on_destroy(void *param);
+void	on_key(mlx_key_data_t keydata, void *param);
+void	on_destroy(void *param);
 
 #endif

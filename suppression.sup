@@ -1,0 +1,48 @@
+{
+	glibc_dl_load_is_dst_count_addr8
+	Memcheck:Addr8
+	fun:strncmp
+	fun:is_dst
+	fun:_dl_dst_count
+	...
+	fun:dl_open_worker
+}
+
+{
+	glibc_dl_load_is_dst_substitute_addr8
+	Memcheck:Addr8
+	fun:strncmp
+	fun:is_dst
+	fun:_dl_dst_substitute
+	...
+	fun:dl_open_worker
+}
+
+{
+	glibc_dlopen_find_object_update_definite_leak
+	Memcheck:Leak
+	match-leak-kinds: definite
+	fun:malloc
+	fun:malloc
+	fun:_dl_find_object_update
+	...
+	fun:dlopen@@GLIBC_2.34
+}
+
+{
+	external_jit_calloc_definite_leak_56_56
+	Memcheck:Leak
+	match-leak-kinds: definite
+	fun:calloc
+	obj:*
+	obj:*
+	obj:*
+	obj:*
+	obj:*
+	obj:*
+	obj:*
+	obj:*
+	obj:*
+	obj:*
+	obj:*
+}

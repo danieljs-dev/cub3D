@@ -18,48 +18,39 @@ static void	app_destroy(t_app *app)
 		return ;
 	framebuffer_destroy(app);
 	free_loaded_textures(app);
-	if (app->mlx.ptr && app->mlx.win)
-		mlx_destroy_window(app->mlx.ptr, app->mlx.win);
+	if (app->mlx.ptr && app->fps_img)
+		mlx_delete_image(app->mlx.ptr, app->fps_img);
+	if (app->mlx.ptr && app->ms_img)
+		mlx_delete_image(app->mlx.ptr, app->ms_img);
+	app->fps_img = NULL;
+	app->ms_img = NULL;
 	if (app->mlx.ptr)
-	{
-		mlx_destroy_display(app->mlx.ptr);
-		free(app->mlx.ptr);
-		app->mlx.ptr = NULL;
-	}
+		mlx_terminate(app->mlx.ptr);
+	app->mlx.ptr = NULL;
 }
 
 static int	app_init(t_app *app)
 {
+	int32_t	inst;
+
 	app->running = 1;
-	app->mlx.ptr = mlx_init();
+	app->mlx.ptr = mlx_init(CUB3D_WIN_W, CUB3D_WIN_H, CUB3D_WIN_TITLE, true);
 	if (!app->mlx.ptr)
 		return (0);
-	app->mlx.win = mlx_new_window(app->mlx.ptr, CUB3D_WIN_W, CUB3D_WIN_H,
-			CUB3D_WIN_TITLE);
-	if (!app->mlx.win)
-		return (0);
+	app->mlx.win = NULL;
 	if (!framebuffer_init(app))
+		return (0);
+	inst = mlx_image_to_window(app->mlx.ptr, app->frame.ptr, 0, 0);
+	if (inst < 0)
 		return (0);
 	if (init_loaded_textures(app) != 0)
 		return (0);
 	return (1);
 }
 
-static int	parse_all(t_app *tmp, t_file *file)
+static void	loop_hook(void *param)
 {
-	if (parse_textures(tmp, file) != 0)
-		return (1);
-	if (parse_colors(tmp, file) != 0)
-		return (1);
-	if (parse_map(file) != 0)
-		return (1);
-	if (validate_map_closed(file) != 0)
-		return (1);
-	if (validate_player_spawn(tmp, file) != 0)
-		return (1);
-	if (player_init(tmp) != 0)
-		return (1);
-	return (0);
+	render_frame((t_app *)param);
 }
 
 static int	parse_setup(t_app *app, t_file *file, int argc, char **argv)
@@ -67,7 +58,12 @@ static int	parse_setup(t_app *app, t_file *file, int argc, char **argv)
 	ft_bzero(app, sizeof(*app));
 	if (parse_cub_file(argc, argv, file) != 0)
 		return (1);
-	if (parse_all(app, file) != 0)
+	if (parse_textures(app, file) != 0
+		|| parse_colors(app, file) != 0
+		|| parse_map(file) != 0
+		|| validate_map_closed(file) != 0
+		|| validate_player_spawn(app, file) != 0
+		|| player_init(app) != 0)
 	{
 		free_textures(&app->tex);
 		free_file(file);
@@ -91,10 +87,9 @@ int	main(int argc, char **argv)
 		app_destroy(&app);
 		return (1);
 	}
-	mlx_hook(app.mlx.win, 2, 1L << 0, on_keydown, &app);
-	mlx_hook(app.mlx.win, 3, 1L << 1, on_keyup, &app);
-	mlx_hook(app.mlx.win, 17, 0, on_destroy, &app);
-	mlx_loop_hook(app.mlx.ptr, render_frame, &app);
+	mlx_key_hook(app.mlx.ptr, on_key, &app);
+	mlx_close_hook(app.mlx.ptr, on_destroy, &app);
+	mlx_loop_hook(app.mlx.ptr, loop_hook, &app);
 	if (PLAYER_TERM_DEBUG)
 		player_debug_term(&app);
 	mlx_loop(app.mlx.ptr);

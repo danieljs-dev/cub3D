@@ -14,18 +14,16 @@
 
 static unsigned int	rgb_to_int(t_rgb color)
 {
-	return ((color.r << 16) | (color.g << 8) | color.b);
+	return ((color.r << 24) | (color.g << 16) | (color.b << 8) | 0xFF);
 }
 
 static void	fill_background_half(t_img *img, int start, int end, unsigned int c)
 {
 	int		x;
 	int		y;
-	int		bytes;
 	char	*dst;
 
-	bytes = img->bpp / 8;
-	if (bytes <= 0)
+	if (img->bpp != 32)
 		return ;
 	y = start;
 	while (y < end)
@@ -33,8 +31,11 @@ static void	fill_background_half(t_img *img, int start, int end, unsigned int c)
 		x = 0;
 		while (x < img->w)
 		{
-			dst = img->addr + (y * img->line_len) + (x * bytes);
-			ft_memcpy(dst, &c, bytes);
+			dst = img->addr + (y * img->line_len) + (x * 4);
+			dst[0] = (char)(c >> 24);
+			dst[1] = (char)(c >> 16);
+			dst[2] = (char)(c >> 8);
+			dst[3] = (char)(c);
 			x++;
 		}
 		y++;
@@ -54,17 +55,15 @@ static void	draw_background(t_app *app)
 	fill_background_half(&app->frame, app->frame.h / 2, app->frame.h, f_color);
 }
 
-int	render_frame(t_app *app)
+void	render_frame(t_app *app)
 {
 	if (!app || !app->mlx.ptr)
-		return (0);
-	if (!app->mlx.win || !app->frame.ptr)
-		return (0);
+		return ;
+	if (!app->frame.ptr)
+		return ;
 	player_update(app);
 	draw_background(app);
 	render_walls(app);
-	mlx_put_image_to_window(app->mlx.ptr, app->mlx.win, app->frame.ptr, 0, 0);
 	if (FPS_DISPLAY)
 		fps_draw(app);
-	return (0);
 }

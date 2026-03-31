@@ -12,22 +12,56 @@
 
 #include "cub3d.h"
 
+static char	*to_xpm42_path(const char *path)
+{
+	size_t	len;
+
+	if (!path)
+		return (NULL);
+	len = ft_strlen(path);
+	if (len < 4)
+		return (NULL);
+	if (ft_strncmp(path + (len - 4), ".xpm", 4) != 0)
+		return (NULL);
+	return (ft_strjoin(path, "42"));
+}
+
+static void	img_from_xpm(t_img *img, xpm_t *xpm)
+{
+	ft_bzero(img, sizeof(*img));
+	img->ptr = xpm;
+	img->addr = (char *)xpm->texture.pixels;
+	img->w = (int)xpm->texture.width;
+	img->h = (int)xpm->texture.height;
+	img->bpp = 32;
+	img->line_len = img->w * 4;
+	img->endian = 0;
+}
+
 static int	load_single_texture(t_app *app, t_img *img, char *path)
 {
+	xpm_t	*xpm;
+	char	*path42;
+	int		fd;
+
 	if (!app || !app->mlx.ptr || !img || !path || *path == '\0')
 		return (ft_print_error("failed to load XPM texture"));
-	ft_bzero(img, sizeof(*img));
-	img->ptr = mlx_xpm_file_to_image(app->mlx.ptr, path, &img->w, &img->h);
-	if (!img->ptr)
+	path42 = to_xpm42_path(path);
+	if (!path42)
 		return (ft_print_error("failed to load XPM texture"));
-	img->addr = mlx_get_data_addr(img->ptr, &img->bpp,
-			&img->line_len, &img->endian);
-	if (!img->addr)
+	fd = open(path42, O_RDONLY);
+	if (fd < 0)
 	{
-		mlx_destroy_image(app->mlx.ptr, img->ptr);
-		ft_bzero(img, sizeof(*img));
-		return (ft_print_error("failed to get texture data address"));
+		free(path42);
+		return (ft_print_error("missing .xpm42 (run make "
+				"to generate textures)"));
 	}
+	close(fd);
+	xpm = mlx_load_xpm42(path42);
+	free(path42);
+	if (!xpm)
+		return (ft_print_error("failed to load XPM42 texture"));
+	img_from_xpm(img, xpm);
 	return (0);
 }
 
