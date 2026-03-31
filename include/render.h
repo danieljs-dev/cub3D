@@ -23,6 +23,7 @@ void	player_update(t_app *app);
 void	rotate_player(t_player *p, double angle);
 
 void	ray_init(t_app *app, int screen_x, t_ray *ray);
+void	ray_init_from_core(t_app *app, t_ray *ray, t_raycore *core);
 void	render_walls(t_app *app);
 void	raycore_init(t_app *app, int screen_x, t_raycore *out);
 void	ray_dda(t_app *app, t_ray *ray);
