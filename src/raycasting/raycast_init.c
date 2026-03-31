@@ -24,14 +24,26 @@ static void	ray_calc_dir(t_app *app, int screen_x, t_ray *ray)
 
 static void	ray_calc_delta(t_player *p, t_ray *ray)
 {
+	double	inv;
+
 	ray->map_x = (int)p->x;
 	ray->map_y = (int)p->y;
 	ray->delta_dist_x = RAY_HUGE;
 	ray->delta_dist_y = RAY_HUGE;
 	if (ray->dir_x != 0.0)
-		ray->delta_dist_x = fabs(1.0 / ray->dir_x);
+	{
+		inv = 1.0 / ray->dir_x;
+		if (inv < 0.0)
+			inv = -inv;
+		ray->delta_dist_x = inv;
+	}
 	if (ray->dir_y != 0.0)
-		ray->delta_dist_y = fabs(1.0 / ray->dir_y);
+	{
+		inv = 1.0 / ray->dir_y;
+		if (inv < 0.0)
+			inv = -inv;
+		ray->delta_dist_y = inv;
+	}
 }
 
 static void	ray_calc_step_side(t_player *p, t_ray *ray)
@@ -71,6 +83,24 @@ void	ray_init(t_app *app, int screen_x, t_ray *ray)
 		return ;
 	p = &app->player;
 	ray_calc_dir(app, screen_x, ray);
+	ray_calc_delta(p, ray);
+	ray_calc_step_side(p, ray);
+	ray->hit = 0;
+}
+
+void	ray_init_from_core(t_app *app, t_ray *ray, t_raycore *core)
+{
+	t_player	*p;
+
+	if (!ray)
+		return ;
+	ft_bzero(ray, sizeof(*ray));
+	if (!app || !core)
+		return ;
+	p = &app->player;
+	ray->camera_x = core->camera_x;
+	ray->dir_x = core->ray_dir_x;
+	ray->dir_y = core->ray_dir_y;
 	ray_calc_delta(p, ray);
 	ray_calc_step_side(p, ray);
 	ray->hit = 0;
