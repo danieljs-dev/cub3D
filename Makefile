@@ -15,6 +15,10 @@ MLX42_DIR	= lib/MLX42
 MLX42_BUILD	= $(MLX42_DIR)/build
 MLX42_LIB	= $(MLX42_BUILD)/libmlx42.a
 
+XPM_CONV	= python3 tools/xpm_to_xpm42.py
+XPM_FILES	= $(wildcard assets/textures/*.xpm)
+XPM42_FILES	= $(XPM_FILES:.xpm=.xpm42)
+
 CRIT_DIR	= lib/criterion-2.4.3
 CRIT_INC	= -I $(CRIT_DIR)/include
 CRIT_LIBDIR	= $(CRIT_DIR)/lib
@@ -80,6 +84,9 @@ ${NAME}: ${XPM42_FILES} ${OBJS} ${LIBFT_LIB} ${MLX42_LIB}
 	mkdir -p ${BIN_DIR}
 	${CC} ${CFLAGS} -no-pie ${OBJS} ${LIBFT_LIB} ${MLX42_LIB} ${LDFLAGS} -o ${BIN_DIR}/${NAME}
 	cp ${BIN_DIR}/${NAME} ${NAME}
+
+assets/textures/%.xpm42: assets/textures/%.xpm
+	$(XPM_CONV) $<
 
 ${OBJ_DIR}/%.o: ${SRC_DIR}/%.c
 	mkdir -p ${@D}
