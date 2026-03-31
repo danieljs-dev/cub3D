@@ -12,48 +12,39 @@
 
 #include "cub3d.h"
 
-int	on_keydown(int keycode, void *param)
+static void	set_input_key(t_app *app, keys_t key, int pressed)
 {
-	t_app	*app;
-
-	app = (t_app *)param;
-	if (!app)
-		return (0);
-	if (keycode == XK_ESCAPE)
-		return (on_destroy(param));
-	if (keycode == XK_LEFT)
-		app->input.left = 1;
-	else if (keycode == XK_RIGHT)
-		app->input.right = 1;
-	if (keycode == XK_W)
-		app->input.w = 1;
-	else if (keycode == XK_A)
-		app->input.a = 1;
-	else if (keycode == XK_S)
-		app->input.s = 1;
-	else if (keycode == XK_D)
-		app->input.d = 1;
-	return (0);
+	if (key == XK_LEFT)
+		app->input.left = pressed;
+	else if (key == XK_RIGHT)
+		app->input.right = pressed;
+	else if (key == XK_W)
+		app->input.w = pressed;
+	else if (key == XK_A)
+		app->input.a = pressed;
+	else if (key == XK_S)
+		app->input.s = pressed;
+	else if (key == XK_D)
+		app->input.d = pressed;
 }
 
-int	on_keyup(int keycode, void *param)
+void	on_key(mlx_key_data_t keydata, void *param)
 {
 	t_app	*app;
+	int		pressed;
 
 	app = (t_app *)param;
 	if (!app)
-		return (0);
-	if (keycode == XK_LEFT)
-		app->input.left = 0;
-	else if (keycode == XK_RIGHT)
-		app->input.right = 0;
-	else if (keycode == XK_W)
-		app->input.w = 0;
-	else if (keycode == XK_A)
-		app->input.a = 0;
-	else if (keycode == XK_S)
-		app->input.s = 0;
-	else if (keycode == XK_D)
-		app->input.d = 0;
-	return (0);
+		return ;
+	if (keydata.key == XK_ESCAPE && keydata.action == MLX_PRESS)
+	{
+		on_destroy(param);
+		return ;
+	}
+	pressed = 0;
+	if (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT)
+		pressed = 1;
+	if (keydata.action == MLX_RELEASE)
+		pressed = 0;
+	set_input_key(app, keydata.key, pressed);
 }

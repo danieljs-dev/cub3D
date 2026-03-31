@@ -12,30 +12,29 @@
 
 #include "cub3d.h"
 
-int	on_destroy(void *param)
+void	on_destroy(void *param)
 {
 	t_app	*app;
 
 	app = (t_app *)param;
 	if (!app || !app->mlx.ptr)
-		return (0);
+		return ;
 	app->running = 0;
-	mlx_loop_end(app->mlx.ptr);
-	return (0);
+	mlx_close_window(app->mlx.ptr);
 }
 
 void	free_loaded_textures(t_app *app)
 {
 	int	i;
 
-	if (!app || !app->mlx.ptr)
+	if (!app)
 		return ;
 	i = 0;
 	while (i < NUM_WALL_TEX)
 	{
 		if (app->wall_text[i].ptr)
 		{
-			mlx_destroy_image(app->mlx.ptr, app->wall_text[i].ptr);
+			mlx_delete_xpm42(app->wall_text[i].ptr);
 			ft_bzero(&app->wall_text[i], sizeof(t_img));
 		}
 		i++;
