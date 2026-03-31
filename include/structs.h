@@ -101,6 +101,14 @@ typedef struct s_ray
 	int		side;
 }			t_ray;
 
+typedef struct s_overlay_str
+{
+	void		**slot;
+	const char	*prefix;
+	int			value;
+	int			y;
+}				t_overlay_str;
+
 typedef struct s_tex_col
 {
 	double	wall_x;

@@ -12,40 +12,50 @@
 
 #include "cub3d.h"
 
-static void	draw_overlay_str(t_app *app, void **slot,
-						const char *prefix, int value, int y)
+static void	draw_overlay_str(t_app *app, t_overlay_str *o)
 {
-	char	*num;
-	char	*str;
+	char		*num;
+	char		*str;
 	mlx_image_t	*img;
 
-	if (!app || !app->mlx.ptr || !slot)
+	if (!app || !app->mlx.ptr || !o || !o->slot)
 		return ;
-	if (*slot)
+	if (*o->slot)
 	{
-		mlx_delete_image(app->mlx.ptr, *slot);
-		*slot = NULL;
+		mlx_delete_image(app->mlx.ptr, *o->slot);
+		*o->slot = NULL;
 	}
-	num = ft_itoa(value);
+	num = ft_itoa(o->value);
 	if (!num)
 		return ;
-	str = ft_strjoin(prefix, num);
+	str = ft_strjoin(o->prefix, num);
 	free(num);
 	if (!str)
 		return ;
-	img = mlx_put_string(app->mlx.ptr, str, 10, y);
+	img = mlx_put_string(app->mlx.ptr, str, 10, o->y);
 	free(str);
 	if (!img)
 		return ;
 	if (img->count > 0)
 		mlx_set_instance_depth(&img->instances[0], 10);
-	*slot = img;
+	*o->slot = img;
 }
 
 void	fps_draw(t_app *app)
 {
-	draw_overlay_str(app, &app->fps_img, "FPS: ", app->fps_display, 20);
-	draw_overlay_str(app, &app->ms_img, "MS:  ", app->ft_ms_display, 40);
+	t_overlay_str	fps;
+	t_overlay_str	ms;
+
+	fps.slot = &app->fps_img;
+	fps.prefix = "FPS: ";
+	fps.value = app->fps_display;
+	fps.y = 20;
+	ms.slot = &app->ms_img;
+	ms.prefix = "MS:  ";
+	ms.value = app->ft_ms_display;
+	ms.y = 40;
+	draw_overlay_str(app, &fps);
+	draw_overlay_str(app, &ms);
 }
 
 void	fps_update(t_app *app)
