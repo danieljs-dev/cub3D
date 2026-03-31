@@ -43,9 +43,17 @@ static void	draw_overlay_str(t_app *app, t_overlay_str *o)
 
 void	fps_draw(t_app *app)
 {
+	static int		last_fps = -1;
+	static int		last_ms = -1;
 	t_overlay_str	fps;
 	t_overlay_str	ms;
 
+	if (!app || !app->mlx.ptr)
+		return ;
+	if (app->fps_display == last_fps && app->ft_ms_display == last_ms)
+		return ;
+	last_fps = app->fps_display;
+	last_ms = app->ft_ms_display;
 	fps.slot = &app->fps_img;
 	fps.prefix = "FPS: ";
 	fps.value = app->fps_display;
