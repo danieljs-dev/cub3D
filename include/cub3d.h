@@ -21,7 +21,7 @@
 # include <sys/time.h>
 
 # include "libft.h"
-# include "mlx.h"
+# include <MLX42/MLX42.h>
 
 # include "structs.h"
 # include "config.h"

@@ -143,6 +143,8 @@ typedef struct s_app
 	int				fps_frames;
 	int				fps_display;
 	int				ft_ms_display;
+	void			*fps_img;
+	void			*ms_img;
 	char			spawn_dir;
 }					t_app;
 

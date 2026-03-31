@@ -35,12 +35,11 @@ void	fps_update(t_app *app);
 void	fps_draw(t_app *app);
 
 int		framebuffer_init(t_app *app);
-int		render_frame(t_app *app);
+void	render_frame(t_app *app);
 int		init_loaded_textures(t_app *app);
 int		player_init(t_app *app);
 int		player_move(t_app *app, double dx, double dy);
-int		on_keydown(int keycode, void *param);
-int		on_keyup(int keycode, void *param);
-int		on_destroy(void *param);
+void	on_key(mlx_key_data_t keydata, void *param);
+void	on_destroy(void *param);
 
 #endif

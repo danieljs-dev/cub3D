@@ -17,13 +17,13 @@
 # define CUB3D_WIN_W 800
 # define CUB3D_WIN_H 600
 
-# define XK_ESCAPE 65307
-# define XK_W 119
-# define XK_A 97
-# define XK_S 115
-# define XK_D 100
-# define XK_LEFT 65361
-# define XK_RIGHT 65363
+# define XK_ESCAPE MLX_KEY_ESCAPE
+# define XK_W MLX_KEY_W
+# define XK_A MLX_KEY_A
+# define XK_S MLX_KEY_S
+# define XK_D MLX_KEY_D
+# define XK_LEFT MLX_KEY_LEFT
+# define XK_RIGHT MLX_KEY_RIGHT
 
 # define PLAYER_MOVE_SPEED 3.0
 # define PLAYER_MAX_DT 0.05
