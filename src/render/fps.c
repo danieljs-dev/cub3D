@@ -12,11 +12,20 @@
 
 #include "cub3d.h"
 
-static void	draw_overlay_str(t_app *app, char *prefix, int value, int y)
+static void	draw_overlay_str(t_app *app, void **slot,
+						const char *prefix, int value, int y)
 {
 	char	*num;
 	char	*str;
+	mlx_image_t	*img;
 
+	if (!app || !app->mlx.ptr || !slot)
+		return ;
+	if (*slot)
+	{
+		mlx_delete_image(app->mlx.ptr, *slot);
+		*slot = NULL;
+	}
 	num = ft_itoa(value);
 	if (!num)
 		return ;
@@ -24,14 +33,19 @@ static void	draw_overlay_str(t_app *app, char *prefix, int value, int y)
 	free(num);
 	if (!str)
 		return ;
-	mlx_string_put(app->mlx.ptr, app->mlx.win, 10, y, 0x000000, str);
+	img = mlx_put_string(app->mlx.ptr, str, 10, y);
 	free(str);
+	if (!img)
+		return ;
+	if (img->count > 0)
+		mlx_set_instance_depth(&img->instances[0], 10);
+	*slot = img;
 }
 
 void	fps_draw(t_app *app)
 {
-	draw_overlay_str(app, "FPS: ", app->fps_display, 20);
-	draw_overlay_str(app, "MS:  ", app->ft_ms_display, 40);
+	draw_overlay_str(app, &app->fps_img, "FPS: ", app->fps_display, 20);
+	draw_overlay_str(app, &app->ms_img, "MS:  ", app->ft_ms_display, 40);
 }
 
 void	fps_update(t_app *app)
