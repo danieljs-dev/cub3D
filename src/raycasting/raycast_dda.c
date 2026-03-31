@@ -14,18 +14,14 @@
 
 static void	do_step(t_ray *ray)
 {
-	if (ray->side_dist_x < ray->side_dist_y)
-	{
-		ray->side_dist_x += ray->delta_dist_x;
-		ray->map_x += ray->step_x;
-		ray->side = 0;
-	}
-	else
-	{
-		ray->side_dist_y += ray->delta_dist_y;
-		ray->map_y += ray->step_y;
-		ray->side = 1;
-	}
+	int	step_in_x;
+
+	step_in_x = (ray->side_dist_x < ray->side_dist_y);
+	ray->side_dist_x += ray->delta_dist_x * step_in_x;
+	ray->map_x += ray->step_x * step_in_x;
+	ray->side_dist_y += ray->delta_dist_y * (1 - step_in_x);
+	ray->map_y += ray->step_y * (1 - step_in_x);
+	ray->side = (step_in_x == 0);
 }
 
 void	ray_dda(t_app *app, t_ray *ray)

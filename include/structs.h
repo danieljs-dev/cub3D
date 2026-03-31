@@ -127,6 +127,7 @@ typedef struct s_app
 {
 	t_mlx			mlx;
 	t_img			frame;
+	double			ray_camera_step;
 	t_img			wall_text[NUM_WALL_TEX];
 	t_file			*file;
 	t_player		player;

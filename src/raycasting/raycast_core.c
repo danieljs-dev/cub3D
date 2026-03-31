@@ -21,8 +21,7 @@ void	raycore_init(t_app *app, int screen_x, t_raycore *out)
 	ft_bzero(out, sizeof(*out));
 	if (!app || app->frame.w <= 0)
 		return ;
-	cam_x = (RAYCORE_CAM_SCALE * (double)screen_x) / (double)app->frame.w
-		- RAYCORE_CAM_SHIFT;
+	cam_x = (app->ray_camera_step * (double)screen_x) - RAYCORE_CAM_SHIFT;
 	out->camera_x = cam_x;
 	out->ray_dir_x = app->player.dir_x + app->player.plane_x * cam_x;
 	out->ray_dir_y = app->player.dir_y + app->player.plane_y * cam_x;

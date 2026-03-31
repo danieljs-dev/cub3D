@@ -18,6 +18,7 @@ int	framebuffer_init(t_app *app)
 		return (0);
 	app->frame.w = CUB3D_WIN_W;
 	app->frame.h = CUB3D_WIN_H;
+	app->ray_camera_step = RAYCORE_CAM_SCALE / (double)app->frame.w;
 	app->frame.ptr = mlx_new_image(app->mlx.ptr, app->frame.w, app->frame.h);
 	if (!app->frame.ptr)
 		return (0);
